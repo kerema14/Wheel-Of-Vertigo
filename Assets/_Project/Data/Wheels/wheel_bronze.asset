@@ -12,30 +12,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6a9cb57566f48c47aa69da5dd1d25b9, type: 3}
   m_Name: wheel_bronze
   m_EditorClassIdentifier: Assembly-CSharp::WheelConfig
-  _baseSprite: {fileID: 1268238662915356757, guid: 461789f314676d3488843e93dd49f21d, type: 3}
-  _indicatorSprite: {fileID: 5759410588988491854, guid: 0654aee48100486429e6dd037face8b6, type: 3}
+  _baseSprite: {fileID: 21300000, guid: 461789f314676d3488843e93dd49f21d, type: 3}
+  _indicatorSprite: {fileID: 21300000, guid: 0654aee48100486429e6dd037face8b6, type: 3}
+  _title: BRONZE SPIN
+  _titleColor: {r: 0.91, g: 0.56, b: 0.24, a: 1}
+  _subtitle: Win big, but watch out for the bomb!
   _slices:
   - _type: 0
     _reward: {fileID: 11400000, guid: 1195530eaf41e4443abf1ea55b31f726, type: 2}
     _baseAmount: 1000
   - _type: 0
-    _reward: {fileID: 11400000, guid: 1195530eaf41e4443abf1ea55b31f726, type: 2}
-    _baseAmount: 1000
+    _reward: {fileID: 11400000, guid: 2c787481b48bf6a4b898b961cbe5d990, type: 2}
+    _baseAmount: 3
   - _type: 0
-    _reward: {fileID: 11400000, guid: 1195530eaf41e4443abf1ea55b31f726, type: 2}
-    _baseAmount: 1000
+    _reward: {fileID: 11400000, guid: bb5ec0cb1f4119143a03e5ea57c669b3, type: 2}
+    _baseAmount: 1
   - _type: 0
-    _reward: {fileID: 11400000, guid: 1195530eaf41e4443abf1ea55b31f726, type: 2}
-    _baseAmount: 1000
-  - _type: 0
-    _reward: {fileID: 11400000, guid: 1195530eaf41e4443abf1ea55b31f726, type: 2}
-    _baseAmount: 1000
-  - _type: 0
-    _reward: {fileID: 11400000, guid: 1195530eaf41e4443abf1ea55b31f726, type: 2}
-    _baseAmount: 1000
-  - _type: 0
-    _reward: {fileID: 11400000, guid: 1195530eaf41e4443abf1ea55b31f726, type: 2}
-    _baseAmount: 1000
+    _reward: {fileID: 11400000, guid: 64873bc506cad2c4db6bcf64d2f83bd6, type: 2}
+    _baseAmount: 1
   - _type: 1
-    _reward: {fileID: 11400000, guid: 1195530eaf41e4443abf1ea55b31f726, type: 2}
-    _baseAmount: 1000
+    _reward: {fileID: 0}
+    _baseAmount: 1
+  - _type: 0
+    _reward: {fileID: 11400000, guid: 21693a4aefc8c2e4c95706c1921a3921, type: 2}
+    _baseAmount: 5
+  - _type: 0
+    _reward: {fileID: 11400000, guid: b7b44c642c9080d4692aec65f3476ec4, type: 2}
+    _baseAmount: 3
+  - _type: 0
+    _reward: {fileID: 11400000, guid: c10b1392df61fdd43a61f9e12f2237be, type: 2}
+    _baseAmount: 1

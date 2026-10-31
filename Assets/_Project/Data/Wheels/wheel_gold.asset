@@ -12,30 +12,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6a9cb57566f48c47aa69da5dd1d25b9, type: 3}
   m_Name: wheel_gold
   m_EditorClassIdentifier: Assembly-CSharp::WheelConfig
-  _baseSprite: {fileID: -1701603775909605344, guid: 7f3240ad6518ef546aaefaea1c649c31, type: 3}
-  _indicatorSprite: {fileID: 8294000708589155680, guid: f71fe2a6480805c499cc2b9b82aa342c, type: 3}
+  _baseSprite: {fileID: 21300000, guid: 7f3240ad6518ef546aaefaea1c649c31, type: 3}
+  _indicatorSprite: {fileID: 21300000, guid: f71fe2a6480805c499cc2b9b82aa342c, type: 3}
+  _title: GOLDEN SPIN
+  _titleColor: {r: 1, g: 0.8, b: 0.2, a: 1}
+  _subtitle: 'Super Zone: special rewards, no bomb'
   _slices:
   - _type: 0
-    _reward: {fileID: 0}
-    _baseAmount: 0
+    _reward: {fileID: 11400000, guid: 108dc46ee856bfe4bbd41220bb443016, type: 2}
+    _baseAmount: 1
   - _type: 0
-    _reward: {fileID: 0}
-    _baseAmount: 0
+    _reward: {fileID: 11400000, guid: 1195530eaf41e4443abf1ea55b31f726, type: 2}
+    _baseAmount: 10000
   - _type: 0
-    _reward: {fileID: 0}
-    _baseAmount: 0
+    _reward: {fileID: 11400000, guid: d793aae7b342204429c47edb1ad26200, type: 2}
+    _baseAmount: 1
   - _type: 0
-    _reward: {fileID: 0}
-    _baseAmount: 0
+    _reward: {fileID: 11400000, guid: 5266fd0dcf286054c952032155dabbc5, type: 2}
+    _baseAmount: 1
   - _type: 0
-    _reward: {fileID: 0}
-    _baseAmount: 0
+    _reward: {fileID: 11400000, guid: 21693a4aefc8c2e4c95706c1921a3921, type: 2}
+    _baseAmount: 50
   - _type: 0
-    _reward: {fileID: 0}
-    _baseAmount: 0
+    _reward: {fileID: 11400000, guid: 6d5d9f4c1152a2d468a830ca52369e54, type: 2}
+    _baseAmount: 1
   - _type: 0
-    _reward: {fileID: 0}
-    _baseAmount: 0
+    _reward: {fileID: 11400000, guid: 4994f4988799bb14b92c41bb2936dd7d, type: 2}
+    _baseAmount: 1
   - _type: 0
-    _reward: {fileID: 0}
-    _baseAmount: 0
+    _reward: {fileID: 11400000, guid: 0f1f06fe628ead041bd01b9913d105b8, type: 2}
+    _baseAmount: 1

@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6a9cb57566f48c47aa69da5dd1d25b9, type: 3}
+  m_Name: wheel_bronze
+  m_EditorClassIdentifier: Assembly-CSharp::WheelConfig
+  _baseSprite: {fileID: 1268238662915356757, guid: 461789f314676d3488843e93dd49f21d, type: 3}
+  _indicatorSprite: {fileID: 5759410588988491854, guid: 0654aee48100486429e6dd037face8b6, type: 3}
+  _slices:
+  - _type: 0
+    _reward: {fileID: 11400000, guid: 1195530eaf41e4443abf1ea55b31f726, type: 2}
+    _baseAmount: 1000
+  - _type: 0
+    _reward: {fileID: 11400000, guid: 1195530eaf41e4443abf1ea55b31f726, type: 2}
+    _baseAmount: 1000
+  - _type: 0
+    _reward: {fileID: 11400000, guid: 1195530eaf41e4443abf1ea55b31f726, type: 2}
+    _baseAmount: 1000
+  - _type: 0
+    _reward: {fileID: 11400000, guid: 1195530eaf41e4443abf1ea55b31f726, type: 2}
+    _baseAmount: 1000
+  - _type: 0
+    _reward: {fileID: 11400000, guid: 1195530eaf41e4443abf1ea55b31f726, type: 2}
+    _baseAmount: 1000
+  - _type: 0
+    _reward: {fileID: 11400000, guid: 1195530eaf41e4443abf1ea55b31f726, type: 2}
+    _baseAmount: 1000
+  - _type: 0
+    _reward: {fileID: 11400000, guid: 1195530eaf41e4443abf1ea55b31f726, type: 2}
+    _baseAmount: 1000
+  - _type: 1
+    _reward: {fileID: 11400000, guid: 1195530eaf41e4443abf1ea55b31f726, type: 2}
+    _baseAmount: 1000

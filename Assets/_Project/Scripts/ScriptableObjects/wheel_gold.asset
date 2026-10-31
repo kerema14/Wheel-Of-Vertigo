@@ -1,0 +1,41 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6a9cb57566f48c47aa69da5dd1d25b9, type: 3}
+  m_Name: wheel_gold
+  m_EditorClassIdentifier: Assembly-CSharp::WheelConfig
+  _baseSprite: {fileID: -1701603775909605344, guid: 7f3240ad6518ef546aaefaea1c649c31, type: 3}
+  _indicatorSprite: {fileID: 8294000708589155680, guid: f71fe2a6480805c499cc2b9b82aa342c, type: 3}
+  _slices:
+  - _type: 0
+    _reward: {fileID: 0}
+    _baseAmount: 0
+  - _type: 0
+    _reward: {fileID: 0}
+    _baseAmount: 0
+  - _type: 0
+    _reward: {fileID: 0}
+    _baseAmount: 0
+  - _type: 0
+    _reward: {fileID: 0}
+    _baseAmount: 0
+  - _type: 0
+    _reward: {fileID: 0}
+    _baseAmount: 0
+  - _type: 0
+    _reward: {fileID: 0}
+    _baseAmount: 0
+  - _type: 0
+    _reward: {fileID: 0}
+    _baseAmount: 0
+  - _type: 0
+    _reward: {fileID: 0}
+    _baseAmount: 0

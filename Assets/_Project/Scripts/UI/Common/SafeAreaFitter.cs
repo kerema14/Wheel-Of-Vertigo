@@ -6,6 +6,10 @@ namespace WheelOfVertigo.UI.Common
     [RequireComponent(typeof(RectTransform))]
     public sealed class SafeAreaFitter : MonoBehaviour
     {
+        // The safe area only changes when the device turns to the other landscape side or the window is resized,
+        // so it is checked every few frames rather than every frame.
+        private const int CheckInterval = 15;
+
         private RectTransform _rectTransform;
         private Rect _appliedArea;
         private Vector2Int _appliedScreen;
@@ -16,9 +20,10 @@ namespace WheelOfVertigo.UI.Common
             Apply();
         }
 
-        // Cheap comparison; the area only changes on rotation or window resize.
         private void Update()
         {
+            if (Time.frameCount % CheckInterval != 0) return;
+
             if (Screen.safeArea != _appliedArea || _appliedScreen.x != Screen.width || _appliedScreen.y != Screen.height)
                 Apply();
         }

@@ -15,6 +15,9 @@ namespace WheelOfVertigo.UI.Presenters
     {
         [SerializeField] private GameConfig _config;
 
+        [Tooltip("Mobile runs at 30 fps unless told otherwise, which makes the spin and the fly-in icons judder.")]
+        [SerializeField, Range(30, 120)] private int _targetFrameRate = 60;
+
         [Header("Views")]
         [SerializeField] private WheelView _wheelView;
         [SerializeField] private ZoneBarView _zoneBarView;
@@ -32,6 +35,8 @@ namespace WheelOfVertigo.UI.Presenters
 
         private void Awake()
         {
+            Application.targetFrameRate = _targetFrameRate;
+
             ZoneRules rules = _config.CreateRules();
             ISlicePicker picker = new RandomSlicePicker(_config.Seed);
             SetUpCheats(ref picker);

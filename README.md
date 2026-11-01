@@ -70,6 +70,16 @@ A zone takes the first type in `GameConfig`'s list whose interval divides its nu
 
 No code changes. `ZoneRulesTests.NewZoneType_NeedsOnlyANewDefinition` covers this case.
 
+## Cheat menu
+
+In the Editor and in development builds, a **CHEATS** button sits in the bottom-right corner during play. It can:
+- skip to any zone, or to the next zone of each special type, winning the zones in between and claiming their unlocks
+- choose the slice the next spin lands on, including the bomb (tap it again to go back to random)
+- add every reward on the current wheel, to fill the reward list
+- run the game at 0.25x, 1x or 3x speed
+
+Cheats go through `GameSession`'s normal API, so the rules still hold. The menu (`UI/Cheats/`) and the presenter's cheat hooks (`GamePresenter.Cheats.cs`) are compiled only when `UNITY_EDITOR` or `DEVELOPMENT_BUILD` is defined, so a release build contains none of it. The menu is drawn with IMGUI to keep it out of the game's canvas, prefabs and atlases.
+
 ## UI rules
 
 | Rule | How it's met |

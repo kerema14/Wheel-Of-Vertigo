@@ -11,7 +11,7 @@ namespace WheelOfVertigo.UI.Presenters
     /// and plays the matching animations in order. Views never talk to the session, and the session never
     /// knows about views.
     /// </summary>
-    public sealed class GamePresenter : MonoBehaviour
+    public sealed partial class GamePresenter : MonoBehaviour
     {
         [SerializeField] private GameConfig _config;
 
@@ -33,10 +33,16 @@ namespace WheelOfVertigo.UI.Presenters
         private void Awake()
         {
             ZoneRules rules = _config.CreateRules();
-            _session = new GameSession(rules, new WheelFactory(rules), new RandomSlicePicker(_config.Seed));
+            ISlicePicker picker = new RandomSlicePicker(_config.Seed);
+            SetUpCheats(ref picker);
+            _session = new GameSession(rules, new WheelFactory(rules), picker);
             _zoneBarView.Initialize(rules);
             _zoneInfoView.Initialize(rules);
         }
+
+        // Implemented in GamePresenter.Cheats.cs, which only compiles in the Editor and development builds.
+        // In a release build the method has no body, so the compiler removes the call.
+        partial void SetUpCheats(ref ISlicePicker picker);
 
         private void OnEnable()
         {

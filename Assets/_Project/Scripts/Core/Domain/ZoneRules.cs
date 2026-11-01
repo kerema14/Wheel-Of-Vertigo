@@ -17,6 +17,9 @@ namespace WheelOfVertigo.Core.Domain
 
         public ZoneDefinition DefaultZone { get; }
 
+        /// <summary>The special zone types, in the order they claim zones.</summary>
+        public IReadOnlyList<ZoneDefinition> SpecialZones => _zones;
+
         /// <param name="zones">Special zone types. A zone takes the first one whose interval divides it.</param>
         /// <param name="defaultZone">The type of every zone that no special type claims.</param>
         public ZoneRules(IReadOnlyList<ZoneDefinition> zones, ZoneDefinition defaultZone, float growthPerZone)

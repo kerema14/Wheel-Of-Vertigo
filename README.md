@@ -79,6 +79,7 @@ Both configs check themselves in `OnValidate`:
 - The spinning wheel and the fly layer each have their own nested `Canvas`. Their per-frame movement doesn't rebuild the static UI.
 - Fly-in icons and reward entries are pooled.
 - Zone bar cells are a fixed set that is reused as the bar scrolls, so it covers any number of zones.
+- The zone bar has two strips that slide together: the plain numbers behind, and a strip masked to the current-zone frame with each zone's panel and current-zone number colour. The next zone's colours wipe in with the motion instead of switching when it stops.
 - Reward icon textures are capped at 256 px, since they never draw larger than about 110 px.
 
 ## Project layout

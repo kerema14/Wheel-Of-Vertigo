@@ -95,6 +95,8 @@ Assets/_Project/
   Tests/      EditMode/
 ```
 
+The zone info cards share one prefab, `ui_item_zone_info_card`, with its `ZoneInfoCardView`. The safe and super cards are prefab variants of it that override only their colours, label, number size and reward cell, so the card is laid out and fixed in one place.
+
 ## Building
 
 Use **File > Build Profiles > Android > Build**. The scene list contains `scene_game`. The build uses IL2CPP for ARM64, and the package id is `com.keremadali.wheelofvertigo`.

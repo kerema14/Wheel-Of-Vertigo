@@ -128,11 +128,11 @@ These follow Unity's *Optimize your game performance for mobile, XR, and the web
   - References are cached in `OnValidate`, data lives in ScriptableObjects, and everything animates with DOTween rather than Animators.
 - **Pooling.** Fly-in icons and reward entries are pooled.
 - **Project settings.**
-  - The game runs at 60 fps: `GamePresenter` sets `Application.targetFrameRate`, which mobile otherwise leaves at 30.
+  - `GamePresenter` sets `Application.targetFrameRate` (120 in the scene; mobile otherwise defaults to 30). Phones with a 60 Hz screen are capped at their refresh rate.
   - 3D and 2D physics are set to Script, so neither simulates.
   - There is one quality level, Mobile.
   - HDR is off in the URP asset, since all the UI is overlay.
-- **Packages.** Only what the game or its tooling needs is installed. The 2D template's extra packages, Sentis, Navigation, Timeline, Visual Scripting, Unity Version Control, the XR input helpers and the unused cloth, terrain-physics, tilemap, occlusion, vehicles and wind modules were removed.
+- **Packages.** Only what the game or its tooling needs is installed. The 2D template's extra packages, the Unity AI Assistant, Sentis, Navigation, Timeline, Visual Scripting, Unity Version Control (the project uses git, with Visible Meta Files), the XR input helpers and the unused cloth, terrain-physics, tilemap, occlusion, vehicles and wind modules were removed.
 - Zone bar cells are a fixed set that is reused as the bar scrolls, so it covers any number of zones.
 - The zone bar has two strips that slide together: the plain numbers behind, and a strip masked to the current-zone frame with each zone's panel and current-zone number colour. The next zone's colours wipe in with the motion instead of switching when it stops.
 - Reward icon textures are capped at 256 px, since they never draw larger than about 110 px.

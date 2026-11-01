@@ -52,6 +52,9 @@ namespace WheelOfVertigo.UI.Views
                 .SetLoops(-1);
         }
 
+        // The glow loops forever, so it stops with the popup rather than turning behind a hidden canvas.
+        protected override void OnHidden() => _glow.DOKill();
+
         private void OnEnable() => _claimButton.onClick.AddListener(HandleClaimClicked);
 
         protected override void OnDisable()

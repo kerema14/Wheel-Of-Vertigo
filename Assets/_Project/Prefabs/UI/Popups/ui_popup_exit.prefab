@@ -284,6 +284,8 @@ GameObject:
   m_Component:
   - component: {fileID: 6373645584117470706}
   - component: {fileID: 8199395064222420022}
+  - component: {fileID: 5219522651070010777}
+  - component: {fileID: 5794556309379027256}
   m_Layer: 5
   m_Name: ui_popup_exit
   m_TagString: Untagged
@@ -327,12 +329,54 @@ MonoBehaviour:
   _dimAlpha: 0.85
   _showDuration: 0.35
   _hideDuration: 0.2
+  _canvas: {fileID: 5219522651070010777}
+  _raycaster: {fileID: 5794556309379027256}
   _dim: {fileID: 2000136870896392253}
   _content: {fileID: 5902630408875612433}
   _contentGroup: {fileID: 1635350335465777800}
   _leaveButton: {fileID: 925984192689346763}
   _stayButton: {fileID: 6854283416994053926}
   _message: {fileID: 1945138749157924676}
+--- !u!223 &5219522651070010777
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2414701787385584275}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 2
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 100
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 1
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_UpdateRectTransformForStandalone: 0
+  m_SortingLayerID: 0
+  m_SortingOrder: 1
+  m_TargetDisplay: 0
+--- !u!114 &5794556309379027256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2414701787385584275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
+  m_IgnoreReversedGraphics: 1
+  m_BlockingObjects: 0
+  m_BlockingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
 --- !u!1 &2684339386297680300
 GameObject:
   m_ObjectHideFlags: 0

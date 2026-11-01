@@ -619,14 +619,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ui_panel_wheel
       objectReference: {fileID: 0}
-    - target: {fileID: 8268051914453123484, guid: 009f8ea92ac07834b94fca41636f4299, type: 3}
-      propertyPath: m_SizeDelta.x
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 8268051914453123484, guid: 009f8ea92ac07834b94fca41636f4299, type: 3}
-      propertyPath: m_SizeDelta.y
-      value: 140
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -827,7 +819,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2702089630975461396, guid: 7bec6fa700cb6714e9d0f22a8ac90a82, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2948923216979315584, guid: 7bec6fa700cb6714e9d0f22a8ac90a82, type: 3}
       propertyPath: m_Pivot.x
@@ -909,6 +901,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7950250851195672021, guid: 7bec6fa700cb6714e9d0f22a8ac90a82, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8637392856415964610, guid: 7bec6fa700cb6714e9d0f22a8ac90a82, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -944,6 +944,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2414701787385584275, guid: d5a98a089d441d747b772c4c8ca2fcab, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5219522651070010777, guid: d5a98a089d441d747b772c4c8ca2fcab, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5794556309379027256, guid: d5a98a089d441d747b772c4c8ca2fcab, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6373645584117470706, guid: d5a98a089d441d747b772c4c8ca2fcab, type: 3}
@@ -1375,7 +1383,6 @@ GameObject:
   - component: {fileID: 1880764128}
   - component: {fileID: 1880764127}
   - component: {fileID: 1880764126}
-  - component: {fileID: 1880764125}
   m_Layer: 5
   m_Name: ui_canvas_main
   m_TagString: Untagged
@@ -1383,23 +1390,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1880764125
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1880764124}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dc42784cf147c0c48a680349fa168899, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.GraphicRaycaster
-  m_IgnoreReversedGraphics: 1
-  m_BlockingObjects: 0
-  m_BlockingMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
 --- !u!114 &1880764126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1481,6 +1471,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1880764128}
     m_Modifications:
+    - target: {fileID: 3055632031845419980, guid: 3e29bf56a82ed8348b252b70c3100b49, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3995501677263394112, guid: 3e29bf56a82ed8348b252b70c3100b49, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1567,6 +1561,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6418953587311860664, guid: 3e29bf56a82ed8348b252b70c3100b49, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9118857397464086779, guid: 3e29bf56a82ed8348b252b70c3100b49, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -1598,12 +1596,20 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1880764128}
     m_Modifications:
+    - target: {fileID: 2753849742731615610, guid: fb77dc2cca0473640abc77c7b4c209b6, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5571439667956166529, guid: fb77dc2cca0473640abc77c7b4c209b6, type: 3}
       propertyPath: m_Name
       value: ui_popup_bomb
       objectReference: {fileID: 0}
     - target: {fileID: 5571439667956166529, guid: fb77dc2cca0473640abc77c7b4c209b6, type: 3}
       propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5855570859717142506, guid: fb77dc2cca0473640abc77c7b4c209b6, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7666681307525970389, guid: fb77dc2cca0473640abc77c7b4c209b6, type: 3}

@@ -20,6 +20,7 @@ namespace WheelOfVertigo.UI.Views
         private struct ZoneStyle
         {
             public Color NumberColor;
+            public Color CurrentNumberColor;
             public Sprite CurrentFrame;
             public Color CurrentFrameColor;
         }
@@ -32,7 +33,6 @@ namespace WheelOfVertigo.UI.Views
         [SerializeField] private ZoneStyle _normalStyle;
         [SerializeField] private ZoneStyle _safeStyle;
         [SerializeField] private ZoneStyle _superStyle;
-        [SerializeField] private Color _currentNumberColor = Color.black;
         [SerializeField, Range(0f, 1f)] private float _passedZoneAlpha = 0.35f;
 
         [Header("References (set from the hierarchy in OnValidate)")]
@@ -81,7 +81,7 @@ namespace WheelOfVertigo.UI.Views
 
         private Color GetNumberColor(int cellZone)
         {
-            if (cellZone == _zone) return _currentNumberColor;
+            if (cellZone == _zone) return GetStyle(cellZone).CurrentNumberColor;
 
             Color color = GetStyle(cellZone).NumberColor;
             if (cellZone < _zone) color.a *= _passedZoneAlpha;

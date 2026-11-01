@@ -7,7 +7,8 @@ namespace WheelOfVertigo.UI.Views
 {
     /// <summary>
     /// The cards that tell the player where the next zone of each special type is, and what it unlocks.
-    /// Each card names its zone type, so a new type's card only has to be added under this panel.
+    /// Each card names its zone type, so a new type's card only has to be placed under this panel.
+    /// The cards are anchored in place rather than stacked by a layout group, because they never move.
     /// </summary>
     public sealed class ZoneInfoView : MonoBehaviour
     {

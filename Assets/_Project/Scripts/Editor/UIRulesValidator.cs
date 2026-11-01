@@ -12,6 +12,8 @@ namespace WheelOfVertigo.EditorTools
     /// Checks the project's UI against the team's UI rules, for the open scenes and every prefab under _Project/Prefabs:
     /// "ui_" names, no needless Raycast Target / Maskable, sliced sprites, no stretched images,
     /// no inspector OnClick events and no Animator on a root transform.
+    /// It also checks the performance rules from Unity's mobile optimization guide: no layout group nested in another,
+    /// a GraphicRaycaster only on canvases with something to click, and every clickable graphic reachable by one.
     /// </summary>
     public static class UIRulesValidator
     {
@@ -74,6 +76,15 @@ namespace WheelOfVertigo.EditorTools
 
                 if (rect.TryGetComponent(out Button button) && button.onClick.GetPersistentEventCount() > 0)
                     issues += Report(rect.gameObject, "has OnClick events set in the Inspector. Add listeners from code instead.");
+
+                if (rect.TryGetComponent(out LayoutGroup group) && group.enabled && HasLayoutGroupAbove(rect))
+                    issues += Report(rect.gameObject, "has a layout group inside another layout group. Use anchors for one of them.");
+
+                if (rect.TryGetComponent(out GraphicRaycaster _) && rect.TryGetComponent(out Canvas canvas) && !HasClickableGraphic(canvas))
+                    issues += Report(rect.gameObject, "has a GraphicRaycaster but nothing on its canvas can be clicked. Remove it.");
+
+                if (rect.TryGetComponent(out Canvas blockingCanvas) && HasBlocker(blockingCanvas) && !SortsAboveHud(blockingCanvas))
+                    issues += Report(rect.gameObject, "blocks clicks to the game behind it but doesn't sort above it. Turn on Override Sorting with an order above 0.");
             }
 
             return issues;
@@ -87,6 +98,10 @@ namespace WheelOfVertigo.EditorTools
             {
                 issues += Report(graphic.gameObject, "has Raycast Target on but nothing clickable uses it.");
                 if (fix) SetRaycastTarget(graphic, false);
+            }
+            else if (graphic.raycastTarget && !CanBeRaycast(graphic))
+            {
+                issues += Report(graphic.gameObject, "needs raycasts, but its canvas has no GraphicRaycaster, so it can't be clicked.");
             }
 
             if (checkMaskable && graphic is MaskableGraphic maskable && maskable.maskable && !IsUnderMask(graphic.transform))
@@ -127,6 +142,48 @@ namespace WheelOfVertigo.EditorTools
         {
             if (graphic is RaycastArea || graphic.TryGetComponent(out RaycastBlocker _)) return true;
             return graphic.TryGetComponent(out Selectable selectable) && selectable.targetGraphic == graphic;
+        }
+
+        // Only the nearest canvas's raycaster sees a graphic. In a prefab opened on its own, the canvas
+        // may come from the scene, so a graphic with no canvas above it isn't reported.
+        private static bool CanBeRaycast(Graphic graphic)
+        {
+            Canvas canvas = graphic.GetComponentInParent<Canvas>(true);
+            return canvas == null || canvas.TryGetComponent(out GraphicRaycaster _);
+        }
+
+        private static bool HasClickableGraphic(Canvas canvas)
+        {
+            foreach (Graphic graphic in canvas.GetComponentsInChildren<Graphic>(true))
+                if (graphic.raycastTarget && NeedsRaycast(graphic) && graphic.GetComponentInParent<Canvas>(true) == canvas)
+                    return true;
+            return false;
+        }
+
+        private static bool HasBlocker(Canvas canvas)
+        {
+            foreach (RaycastBlocker blocker in canvas.GetComponentsInChildren<RaycastBlocker>(true))
+                if (blocker.GetComponentInParent<Canvas>(true) == canvas)
+                    return true;
+            return false;
+        }
+
+        // The root canvas has no raycaster, so Unity doesn't compare depth between the panels' raycasters; only the
+        // sorting order puts a popup's hits first. Read from the serialized data, because a canvas opened on its own
+        // in a prefab is a root canvas and reports no override sorting.
+        private static bool SortsAboveHud(Canvas canvas)
+        {
+            var serialized = new SerializedObject(canvas);
+            return serialized.FindProperty("m_OverrideSorting").boolValue && serialized.FindProperty("m_SortingOrder").intValue > 0;
+        }
+
+        // A layout group rebuilds all its children when one of them changes, and nesting groups multiplies that.
+        private static bool HasLayoutGroupAbove(Transform transform)
+        {
+            for (Transform current = transform.parent; current != null; current = current.parent)
+                if (current.TryGetComponent(out LayoutGroup group) && group.enabled)
+                    return true;
+            return false;
         }
 
         private static bool IsUnderMask(Transform transform)

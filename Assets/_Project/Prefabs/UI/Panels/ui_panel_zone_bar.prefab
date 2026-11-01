@@ -548,10 +548,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ui_item_zone_bar_number_3
       objectReference: {fileID: 0}
-    - target: {fileID: 5620530785792257166, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
-      propertyPath: m_TextStyleHashCode
-      value: -1183493901
-      objectReference: {fileID: 0}
     - target: {fileID: 6036449293230141974, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -664,10 +660,6 @@ PrefabInstance:
     - target: {fileID: 4821871104217007056, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
       propertyPath: m_Name
       value: ui_item_zone_bar_number_5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5620530785792257166, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
-      propertyPath: m_TextStyleHashCode
-      value: -1183493901
       objectReference: {fileID: 0}
     - target: {fileID: 6036449293230141974, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
       propertyPath: m_Pivot.x
@@ -782,10 +774,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ui_item_zone_bar_number_1
       objectReference: {fileID: 0}
-    - target: {fileID: 5620530785792257166, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
-      propertyPath: m_TextStyleHashCode
-      value: -1183493901
-      objectReference: {fileID: 0}
     - target: {fileID: 6036449293230141974, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -898,10 +886,6 @@ PrefabInstance:
     - target: {fileID: 4821871104217007056, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
       propertyPath: m_Name
       value: ui_item_zone_bar_number_4
-      objectReference: {fileID: 0}
-    - target: {fileID: 5620530785792257166, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
-      propertyPath: m_TextStyleHashCode
-      value: -1183493901
       objectReference: {fileID: 0}
     - target: {fileID: 6036449293230141974, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
       propertyPath: m_Pivot.x
@@ -1016,10 +1000,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ui_item_zone_bar_number_6
       objectReference: {fileID: 0}
-    - target: {fileID: 5620530785792257166, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
-      propertyPath: m_TextStyleHashCode
-      value: -1183493901
-      objectReference: {fileID: 0}
     - target: {fileID: 6036449293230141974, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1132,10 +1112,6 @@ PrefabInstance:
     - target: {fileID: 4821871104217007056, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
       propertyPath: m_Name
       value: ui_item_zone_bar_number_7
-      objectReference: {fileID: 0}
-    - target: {fileID: 5620530785792257166, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
-      propertyPath: m_TextStyleHashCode
-      value: -1183493901
       objectReference: {fileID: 0}
     - target: {fileID: 6036449293230141974, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
       propertyPath: m_Pivot.x
@@ -1250,10 +1226,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ui_item_zone_bar_number_2
       objectReference: {fileID: 0}
-    - target: {fileID: 5620530785792257166, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
-      propertyPath: m_TextStyleHashCode
-      value: -1183493901
-      objectReference: {fileID: 0}
     - target: {fileID: 6036449293230141974, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1366,10 +1338,6 @@ PrefabInstance:
     - target: {fileID: 4821871104217007056, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
       propertyPath: m_Name
       value: ui_item_zone_bar_number_0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5620530785792257166, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
-      propertyPath: m_TextStyleHashCode
-      value: -1183493901
       objectReference: {fileID: 0}
     - target: {fileID: 6036449293230141974, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
       propertyPath: m_Pivot.x
@@ -1484,10 +1452,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ui_item_zone_bar_number_9
       objectReference: {fileID: 0}
-    - target: {fileID: 5620530785792257166, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
-      propertyPath: m_TextStyleHashCode
-      value: -1183493901
-      objectReference: {fileID: 0}
     - target: {fileID: 6036449293230141974, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1600,10 +1564,6 @@ PrefabInstance:
     - target: {fileID: 4821871104217007056, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
       propertyPath: m_Name
       value: ui_item_zone_bar_number_12
-      objectReference: {fileID: 0}
-    - target: {fileID: 5620530785792257166, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
-      propertyPath: m_TextStyleHashCode
-      value: -1183493901
       objectReference: {fileID: 0}
     - target: {fileID: 6036449293230141974, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
       propertyPath: m_Pivot.x
@@ -1718,10 +1678,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ui_item_zone_bar_number_11
       objectReference: {fileID: 0}
-    - target: {fileID: 5620530785792257166, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
-      propertyPath: m_TextStyleHashCode
-      value: -1183493901
-      objectReference: {fileID: 0}
     - target: {fileID: 6036449293230141974, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1834,10 +1790,6 @@ PrefabInstance:
     - target: {fileID: 4821871104217007056, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
       propertyPath: m_Name
       value: ui_item_zone_bar_number_14
-      objectReference: {fileID: 0}
-    - target: {fileID: 5620530785792257166, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
-      propertyPath: m_TextStyleHashCode
-      value: -1183493901
       objectReference: {fileID: 0}
     - target: {fileID: 6036449293230141974, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
       propertyPath: m_Pivot.x
@@ -1952,10 +1904,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ui_item_zone_bar_number_13
       objectReference: {fileID: 0}
-    - target: {fileID: 5620530785792257166, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
-      propertyPath: m_TextStyleHashCode
-      value: -1183493901
-      objectReference: {fileID: 0}
     - target: {fileID: 6036449293230141974, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2069,10 +2017,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: ui_item_zone_bar_number_10
       objectReference: {fileID: 0}
-    - target: {fileID: 5620530785792257166, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
-      propertyPath: m_TextStyleHashCode
-      value: -1183493901
-      objectReference: {fileID: 0}
     - target: {fileID: 6036449293230141974, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -2185,10 +2129,6 @@ PrefabInstance:
     - target: {fileID: 4821871104217007056, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
       propertyPath: m_Name
       value: ui_item_zone_bar_number_8
-      objectReference: {fileID: 0}
-    - target: {fileID: 5620530785792257166, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
-      propertyPath: m_TextStyleHashCode
-      value: -1183493901
       objectReference: {fileID: 0}
     - target: {fileID: 6036449293230141974, guid: c1798bbce60b67444b545f46077aa44c, type: 3}
       propertyPath: m_Pivot.x

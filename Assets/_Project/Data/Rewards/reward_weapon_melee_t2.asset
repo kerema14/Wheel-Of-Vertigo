@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c938ac10f50405b49b25056278b903e9, type: 3}
   m_Name: reward_weapon_melee_t2
   m_EditorClassIdentifier: WheelOfVertigo.Core::WheelOfVertigo.Core.Data.RewardDefinition
-  _displayName: Melee Tier 2
+  _displayName: Kukri
   _icon: {fileID: 21300000, guid: af1831738309ce04a86a7951af055008, type: 3}
   _kind: 5

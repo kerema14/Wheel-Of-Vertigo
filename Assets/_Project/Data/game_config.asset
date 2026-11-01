@@ -18,5 +18,12 @@ MonoBehaviour:
   _normalWheel: {fileID: 11400000, guid: e5c397405ce8cde46a57d87610235527, type: 2}
   _safeWheel: {fileID: 11400000, guid: 668733636b5b47f4aa916162474bca1f, type: 2}
   _superWheel: {fileID: 11400000, guid: 51dd939b5928be6419b988e208f948cc, type: 2}
+  _superZoneRewards:
+  - {fileID: 11400000, guid: 6d5d9f4c1152a2d468a830ca52369e54, type: 2}
+  - {fileID: 11400000, guid: 930f48b30ced9054983401062065db8e, type: 2}
+  - {fileID: 11400000, guid: 9b3193e3b76db1049975fe769f3eb9be, type: 2}
+  - {fileID: 11400000, guid: 17c0c6f42b305b2499777ef87bbd06b2, type: 2}
+  - {fileID: 11400000, guid: 108dc46ee856bfe4bbd41220bb443016, type: 2}
+  - {fileID: 11400000, guid: a72e741bfd73a82459a0ba253eef621b, type: 2}
   _bombIcon: {fileID: 21300000, guid: ecbf9f12997096d4087be1be3e663696, type: 3}
   _seed: 0

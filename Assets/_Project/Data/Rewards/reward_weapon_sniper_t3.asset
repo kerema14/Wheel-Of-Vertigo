@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c938ac10f50405b49b25056278b903e9, type: 3}
   m_Name: reward_weapon_sniper_t3
   m_EditorClassIdentifier: WheelOfVertigo.Core::WheelOfVertigo.Core.Data.RewardDefinition
-  _displayName: Sniper Tier 3
+  _displayName: Sniper Rifle
   _icon: {fileID: 21300000, guid: fc4ef163dedc60149a795ffd56f7c5c0, type: 3}
   _kind: 5

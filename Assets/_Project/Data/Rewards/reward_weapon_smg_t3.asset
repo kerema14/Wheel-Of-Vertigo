@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c938ac10f50405b49b25056278b903e9, type: 3}
   m_Name: reward_weapon_smg_t3
   m_EditorClassIdentifier: WheelOfVertigo.Core::WheelOfVertigo.Core.Data.RewardDefinition
-  _displayName: SMG Tier 3
+  _displayName: SMG
   _icon: {fileID: 21300000, guid: c32810905950898488e112fd148a7159, type: 3}
   _kind: 5

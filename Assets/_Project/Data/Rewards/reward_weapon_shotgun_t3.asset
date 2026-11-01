@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c938ac10f50405b49b25056278b903e9, type: 3}
   m_Name: reward_weapon_shotgun_t3
   m_EditorClassIdentifier: WheelOfVertigo.Core::WheelOfVertigo.Core.Data.RewardDefinition
-  _displayName: Shotgun Tier 3
+  _displayName: Pump Shotgun
   _icon: {fileID: 21300000, guid: e5279b02bf023114ea4ca9581f0294f1, type: 3}
   _kind: 5

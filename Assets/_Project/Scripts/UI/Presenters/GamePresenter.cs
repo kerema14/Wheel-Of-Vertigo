@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using WheelOfVertigo.Core.Data;
 using WheelOfVertigo.Core.Domain;
 using WheelOfVertigo.UI.Views;
@@ -22,16 +23,19 @@ namespace WheelOfVertigo.UI.Presenters
         [SerializeField] private RewardFlyAnimator _rewardFlyAnimator;
         [SerializeField] private BombPopupView _bombPopupView;
         [SerializeField] private ExitConfirmPopupView _exitConfirmPopupView;
+        [SerializeField] private UnlockPopupView _unlockPopupView;
         [SerializeField] private CashOutPopupView _cashOutPopupView;
 
         private GameSession _session;
+        private ISuperZoneRewards _superZoneRewards;
         private WheelConfig _shownWheel;
         private bool _isAnimating;   // true while a presentation step must finish before the player acts again
 
         private void Awake()
         {
             ZoneRules rules = _config.CreateRules();
-            _session = new GameSession(rules, new WheelFactory(_config, rules), new RandomSlicePicker(_config.Seed));
+            _superZoneRewards = new SuperZoneRewardTable(_config.SuperZoneRewards, rules);
+            _session = new GameSession(rules, new WheelFactory(_config, rules), new RandomSlicePicker(_config.Seed), _superZoneRewards);
             _zoneBarView.Initialize(rules);
         }
 
@@ -44,6 +48,7 @@ namespace WheelOfVertigo.UI.Presenters
             _exitConfirmPopupView.LeaveRequested += OnLeaveConfirmed;
             _exitConfirmPopupView.StayRequested += OnStayRequested;
             _cashOutPopupView.CollectRequested += OnCollectRequested;
+            _unlockPopupView.ClaimRequested += OnClaimRequested;
         }
 
         private void OnDisable()
@@ -55,6 +60,7 @@ namespace WheelOfVertigo.UI.Presenters
             _exitConfirmPopupView.LeaveRequested -= OnLeaveConfirmed;
             _exitConfirmPopupView.StayRequested -= OnStayRequested;
             _cashOutPopupView.CollectRequested -= OnCollectRequested;
+            _unlockPopupView.ClaimRequested -= OnClaimRequested;
         }
 
         private void Start() => ShowNewRun();
@@ -99,7 +105,35 @@ namespace WheelOfVertigo.UI.Presenters
         private void AdvanceZone()
         {
             _session.AdvanceZone();
-            ShowZone(animate: true);
+            ShowZone(animate: true, onShown: ShowUnlockIfAny);
+        }
+
+        // A super zone presents its guaranteed reward once the bar and the wheel have settled on it.
+        private void ShowUnlockIfAny()
+        {
+            if (_session.State == SessionState.Unlocking)
+                _unlockPopupView.Show(_session.CurrentZone.Unlock);
+        }
+
+        private void OnClaimRequested()
+        {
+            if (_session.State != SessionState.Unlocking) return;
+
+            SetAnimating(true);
+            RewardDefinition reward = _session.ClaimUnlock();
+            int total = _session.Inventory.GetAmount(reward);
+            RewardEntryView entry = _rewardPanelView.GetOrCreateEntry(reward);
+
+            _unlockPopupView.Hide(() => _rewardFlyAnimator.Play(
+                reward.Icon,
+                _unlockPopupView.IconRect,
+                entry.IconRect,
+                entry.Punch,
+                () =>
+                {
+                    entry.AnimateAmount(total);
+                    SetAnimating(false);
+                }));
         }
 
         private void PlayBomb(SpinResult result)
@@ -143,30 +177,39 @@ namespace WheelOfVertigo.UI.Presenters
             RefreshInteractivity();
         }
 
-        private void ShowZone(bool animate)
+        private void ShowZone(bool animate, Action onShown = null)
         {
             Zone zone = _session.CurrentZone;
             ZoneRules rules = _session.Rules;
+            int nextSuperZone = rules.NextZoneOfType(zone.Index, ZoneType.Super);
+            RewardDefinition nextUnlock = _superZoneRewards.GetReward(nextSuperZone);
 
             _zoneBarView.ShowZone(zone.Index, animate);
             _zoneInfoView.Show(
                 rules.NextZoneOfType(zone.Index, ZoneType.Safe),
-                rules.NextZoneOfType(zone.Index, ZoneType.Super),
+                nextSuperZone,
+                nextUnlock != null ? nextUnlock.Icon : null,
                 zone.Type);
 
             if (_shownWheel == null)
             {
                 BindWheel(zone);
+                onShown?.Invoke();
             }
             else if (_shownWheel != zone.Wheel.Config)
             {
                 SetAnimating(true);
-                _wheelView.PlayTierChange(() => BindWheel(zone), () => SetAnimating(false));
+                _wheelView.PlayTierChange(() => BindWheel(zone), () =>
+                {
+                    SetAnimating(false);
+                    onShown?.Invoke();
+                });
             }
             else
             {
                 BindWheel(zone);
                 if (animate) _wheelView.PlayRefresh();
+                onShown?.Invoke();
             }
         }
 

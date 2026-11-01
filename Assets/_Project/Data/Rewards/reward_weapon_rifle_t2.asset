@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c938ac10f50405b49b25056278b903e9, type: 3}
   m_Name: reward_weapon_rifle_t2
   m_EditorClassIdentifier: WheelOfVertigo.Core::WheelOfVertigo.Core.Data.RewardDefinition
-  _displayName: Rifle Tier 2
+  _displayName: Assault Rifle
   _icon: {fileID: 21300000, guid: f76bccd1520e65e4c86b08478700f33c, type: 3}
   _kind: 5

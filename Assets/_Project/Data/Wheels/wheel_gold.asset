@@ -19,7 +19,7 @@ MonoBehaviour:
   _subtitle: 'Super Zone: special rewards, no bomb'
   _slices:
   - _type: 0
-    _reward: {fileID: 11400000, guid: 108dc46ee856bfe4bbd41220bb443016, type: 2}
+    _reward: {fileID: 11400000, guid: 97b5b938b671f274f9cf4e8cc8dcf24b, type: 2}
     _baseAmount: 1
   - _type: 0
     _reward: {fileID: 11400000, guid: 1195530eaf41e4443abf1ea55b31f726, type: 2}
@@ -34,7 +34,7 @@ MonoBehaviour:
     _reward: {fileID: 11400000, guid: 21693a4aefc8c2e4c95706c1921a3921, type: 2}
     _baseAmount: 50
   - _type: 0
-    _reward: {fileID: 11400000, guid: 6d5d9f4c1152a2d468a830ca52369e54, type: 2}
+    _reward: {fileID: 11400000, guid: 20db7c37312c17e41b4f60cfdccd9523, type: 2}
     _baseAmount: 1
   - _type: 0
     _reward: {fileID: 11400000, guid: 4994f4988799bb14b92c41bb2936dd7d, type: 2}

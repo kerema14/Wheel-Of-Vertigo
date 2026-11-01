@@ -10,7 +10,7 @@ Unity 6000.3.23f1, uGUI with TextMeshPro, DOTween and Sprite Atlas V2. The targe
 - Every 5th zone is a **safe zone** with a **silver** wheel and no bomb.
 - Every 30th zone is a **super zone** with a **golden** wheel, special rewards and no bomb.
 - Reward amounts grow by 15% of their base value every zone.
-- **Exit** is enabled at any zone while the wheel is idle, as in Critical Strike. Leaving shows what you walked away with. Safe and super zones are the ones without a bomb.
+- **Exit** is enabled at any zone while the wheel is idle, as in Critical Strike. It asks for confirmation first, then shows what you walked away with. Safe and super zones are the ones without a bomb.
 - Hitting the bomb shows the bomb popup. **Restart** begins a new run at zone 1.
 
 ## Architecture

@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using WheelOfVertigo.Core.Data;
 using WheelOfVertigo.Core.Domain;
 using WheelOfVertigo.UI.Views;
@@ -21,6 +21,7 @@ namespace WheelOfVertigo.UI.Presenters
         [SerializeField] private RewardPanelView _rewardPanelView;
         [SerializeField] private RewardFlyAnimator _rewardFlyAnimator;
         [SerializeField] private BombPopupView _bombPopupView;
+        [SerializeField] private ExitConfirmPopupView _exitConfirmPopupView;
         [SerializeField] private CashOutPopupView _cashOutPopupView;
 
         private GameSession _session;
@@ -40,6 +41,8 @@ namespace WheelOfVertigo.UI.Presenters
             _wheelView.SpinRequested += OnSpinRequested;
             _rewardPanelView.ExitRequested += OnExitRequested;
             _bombPopupView.RestartRequested += OnRestartRequested;
+            _exitConfirmPopupView.LeaveRequested += OnLeaveConfirmed;
+            _exitConfirmPopupView.StayRequested += OnStayRequested;
             _cashOutPopupView.CollectRequested += OnCollectRequested;
         }
 
@@ -49,6 +52,8 @@ namespace WheelOfVertigo.UI.Presenters
             _wheelView.SpinRequested -= OnSpinRequested;
             _rewardPanelView.ExitRequested -= OnExitRequested;
             _bombPopupView.RestartRequested -= OnRestartRequested;
+            _exitConfirmPopupView.LeaveRequested -= OnLeaveConfirmed;
+            _exitConfirmPopupView.StayRequested -= OnStayRequested;
             _cashOutPopupView.CollectRequested -= OnCollectRequested;
         }
 
@@ -110,8 +115,16 @@ namespace WheelOfVertigo.UI.Presenters
         {
             if (!CanAct(_session.CanLeave)) return;
 
-            _cashOutPopupView.Show(_session.CashOut());
+            _exitConfirmPopupView.Show(_session.Inventory.Count);
         }
+
+        private void OnLeaveConfirmed() => _exitConfirmPopupView.Hide(() =>
+        {
+            if (_session.CanLeave)
+                _cashOutPopupView.Show(_session.CashOut());
+        });
+
+        private void OnStayRequested() => _exitConfirmPopupView.Hide();
 
         private void OnRestartRequested() => _bombPopupView.Hide(RestartRun);
 

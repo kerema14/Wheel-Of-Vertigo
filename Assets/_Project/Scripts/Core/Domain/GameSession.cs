@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using WheelOfVertigo.Core.Data;
 
 namespace WheelOfVertigo.Core.Domain
 {
@@ -8,6 +9,7 @@ namespace WheelOfVertigo.Core.Domain
         Ready,        // waiting for the player to spin or leave
         Spinning,     // a slice has been picked and the wheel is turning
         Collecting,   // a reward was won; the zone advances once the reward animation is done
+        Unlocking,    // reached a super zone; its guaranteed reward is waiting to be claimed
         Busted,       // hit the bomb; everything collected is lost
         CashedOut     // left the run with the rewards
     }
@@ -33,6 +35,7 @@ namespace WheelOfVertigo.Core.Domain
     {
         private readonly IWheelFactory _wheelFactory;
         private readonly ISlicePicker _picker;
+        private readonly ISuperZoneRewards _superZoneRewards;
         private SpinResult _pendingResult;
 
         public event Action<SessionState> StateChanged;
@@ -46,11 +49,12 @@ namespace WheelOfVertigo.Core.Domain
         // As in Critical Strike, the player may leave at any zone, as long as the wheel isn't spinning.
         public bool CanLeave => State == SessionState.Ready;
 
-        public GameSession(ZoneRules rules, IWheelFactory wheelFactory, ISlicePicker picker)
+        public GameSession(ZoneRules rules, IWheelFactory wheelFactory, ISlicePicker picker, ISuperZoneRewards superZoneRewards)
         {
             Rules = rules ?? throw new ArgumentNullException(nameof(rules));
             _wheelFactory = wheelFactory ?? throw new ArgumentNullException(nameof(wheelFactory));
             _picker = picker ?? throw new ArgumentNullException(nameof(picker));
+            _superZoneRewards = superZoneRewards ?? throw new ArgumentNullException(nameof(superZoneRewards));
             CurrentZone = CreateZone(ZoneRules.FirstZone);
             State = SessionState.Ready;
         }
@@ -85,14 +89,27 @@ namespace WheelOfVertigo.Core.Domain
             return _pendingResult;
         }
 
-        /// <summary>Moves to the next zone once the won reward has been shown.</summary>
+        /// <summary>
+        /// Moves to the next zone once the won reward has been shown. A zone with a guaranteed reward
+        /// waits in <see cref="SessionState.Unlocking"/> until <see cref="ClaimUnlock"/> is called.
+        /// </summary>
         public Zone AdvanceZone()
         {
             EnsureState(SessionState.Collecting, nameof(AdvanceZone));
 
             CurrentZone = CreateZone(CurrentZone.Index + 1);
-            SetState(SessionState.Ready);
+            SetState(CurrentZone.HasUnlock ? SessionState.Unlocking : SessionState.Ready);
             return CurrentZone;
+        }
+
+        /// <summary>Adds the current zone's guaranteed reward to the run. Like any reward, a later bomb takes it.</summary>
+        public RewardDefinition ClaimUnlock()
+        {
+            EnsureState(SessionState.Unlocking, nameof(ClaimUnlock));
+
+            Inventory.Add(CurrentZone.Unlock, 1);
+            SetState(SessionState.Ready);
+            return CurrentZone.Unlock;
         }
 
         /// <summary>Leaves the run and keeps the rewards. Only allowed while the wheel isn't spinning.</summary>
@@ -116,7 +133,7 @@ namespace WheelOfVertigo.Core.Domain
         private Zone CreateZone(int index)
         {
             ZoneType type = Rules.GetZoneType(index);
-            return new Zone(index, type, _wheelFactory.Create(index, type));
+            return new Zone(index, type, _wheelFactory.Create(index, type), _superZoneRewards.GetReward(index));
         }
 
         private void EnsureState(SessionState expected, string action)

@@ -25,6 +25,16 @@ namespace WheelOfVertigo.Tests
             Assert.AreEqual(expected, _rules.GetZoneType(zone));
         }
 
+        [TestCase(1, 0)]
+        [TestCase(5, 0)]
+        [TestCase(30, 1)]
+        [TestCase(31, 0)]
+        [TestCase(90, 3)]
+        public void GetSuperZoneNumber_CountsSuperZones(int zone, int expected)
+        {
+            Assert.AreEqual(expected, _rules.GetSuperZoneNumber(zone));
+        }
+
         [TestCase(1000, 1, 1000)]
         [TestCase(1000, 2, 1100)]
         [TestCase(1000, 11, 2000)]

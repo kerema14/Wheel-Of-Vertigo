@@ -1,10 +1,12 @@
+using System.Collections.Generic;
 using UnityEngine;
 using WheelOfVertigo.Core.Domain;
 
 namespace WheelOfVertigo.Core.Data
 {
     /// <summary>
-    /// The single tuning asset for a run: zone rhythm, reward growth and which wheel each zone type uses.
+    /// The single tuning asset for a run: zone rhythm, reward growth, which wheel each zone type uses
+    /// and the rewards that super zones unlock.
     /// </summary>
     [CreateAssetMenu(menuName = "Wheel Of Vertigo/Game Config", fileName = "game_config")]
     public class GameConfig : ScriptableObject
@@ -20,6 +22,10 @@ namespace WheelOfVertigo.Core.Data
         [SerializeField] private WheelConfig _safeWheel;
         [SerializeField] private WheelConfig _superWheel;
 
+        [Header("Super zone unlocks")]
+        [Tooltip("Reaching a super zone unlocks one of these, in order: the 1st super zone gets the 1st entry, and so on. The list repeats once it runs out.")]
+        [SerializeField] private RewardDefinition[] _superZoneRewards;
+
         [Header("Bomb")]
         [SerializeField] private Sprite _bombIcon;
 
@@ -29,6 +35,7 @@ namespace WheelOfVertigo.Core.Data
 
         public Sprite BombIcon => _bombIcon;
         public int Seed => _seed;
+        public IReadOnlyList<RewardDefinition> SuperZoneRewards => _superZoneRewards;
 
         public ZoneRules CreateRules() => new ZoneRules(_safeZoneInterval, _superZoneInterval, _rewardGrowthPerZone);
 
@@ -49,6 +56,11 @@ namespace WheelOfVertigo.Core.Data
 
             if (_normalWheel != null && _normalWheel.BombCount == 0)
                 Debug.LogWarning($"{name}: the normal wheel has no bomb, so the game has no risk.", this);
+
+            if (_superZoneRewards == null || _superZoneRewards.Length == 0)
+                Debug.LogWarning($"{name}: no super zone rewards, so reaching a super zone unlocks nothing.", this);
+            else if (System.Array.IndexOf(_superZoneRewards, null) >= 0)
+                Debug.LogWarning($"{name}: a super zone reward is empty.", this);
 
             WarnIfHasBomb(_safeWheel, "safe");
             WarnIfHasBomb(_superWheel, "super");

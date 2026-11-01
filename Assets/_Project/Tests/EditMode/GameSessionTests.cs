@@ -14,6 +14,7 @@ namespace WheelOfVertigo.Tests
         private const int BaseAmount = 100;
 
         private RewardDefinition _cash;
+        private RewardDefinition _unlock;
         private FixedSlicePicker _picker;
         private GameSession _session;
 
@@ -21,13 +22,19 @@ namespace WheelOfVertigo.Tests
         public void SetUp()
         {
             _cash = ScriptableObject.CreateInstance<RewardDefinition>();
+            _unlock = ScriptableObject.CreateInstance<RewardDefinition>();
             _picker = new FixedSlicePicker();
             var rules = new ZoneRules(5, 30, 0.1f);
-            _session = new GameSession(rules, new TestWheelFactory(_cash, rules), _picker);
+            var superZoneRewards = new SuperZoneRewardTable(new[] { _unlock }, rules);
+            _session = new GameSession(rules, new TestWheelFactory(_cash, rules), _picker, superZoneRewards);
         }
 
         [TearDown]
-        public void TearDown() => UnityEngine.Object.DestroyImmediate(_cash);
+        public void TearDown()
+        {
+            UnityEngine.Object.DestroyImmediate(_cash);
+            UnityEngine.Object.DestroyImmediate(_unlock);
+        }
 
         [Test]
         public void NewSession_StartsReadyAtZoneOne()
@@ -129,6 +136,54 @@ namespace WheelOfVertigo.Tests
         }
 
         [Test]
+        public void ReachingSuperZone_WaitsForUnlockToBeClaimed()
+        {
+            PlayWinningZones(28);
+            SpinAndResolve(RewardSlice);
+            _session.AdvanceZone();
+
+            Assert.AreEqual(30, _session.CurrentZone.Index);
+            Assert.AreSame(_unlock, _session.CurrentZone.Unlock);
+            Assert.AreEqual(SessionState.Unlocking, _session.State);
+            Assert.IsFalse(_session.CanSpin, "can't spin before claiming");
+            Assert.IsFalse(_session.CanLeave, "can't leave before claiming");
+        }
+
+        [Test]
+        public void ClaimUnlock_AddsRewardAndReadiesZone()
+        {
+            PlayWinningZones(28);
+            SpinAndResolve(RewardSlice);
+            _session.AdvanceZone();
+
+            RewardDefinition claimed = _session.ClaimUnlock();
+
+            Assert.AreSame(_unlock, claimed);
+            Assert.AreEqual(1, _session.Inventory.GetAmount(_unlock));
+            Assert.AreEqual(SessionState.Ready, _session.State);
+            Assert.IsTrue(_session.CanSpin);
+        }
+
+        [Test]
+        public void ClaimUnlock_ThrowsWithNothingToUnlock()
+        {
+            Assert.IsFalse(_session.CurrentZone.HasUnlock);
+            Assert.Throws<InvalidOperationException>(() => _session.ClaimUnlock());
+        }
+
+        [Test]
+        public void ClaimedUnlock_IsLostToTheBomb()
+        {
+            PlayWinningZones(30);
+            Assert.AreEqual(31, _session.CurrentZone.Index);
+            Assert.AreEqual(1, _session.Inventory.GetAmount(_unlock));
+
+            SpinAndResolve(BombSlice);
+
+            Assert.AreEqual(0, _session.Inventory.GetAmount(_unlock));
+        }
+
+        [Test]
         public void Rewards_GrowWithZone()
         {
             int zoneOneAmount = _session.CurrentZone.Wheel.GetSlice(RewardSlice).Amount;
@@ -171,12 +226,14 @@ namespace WheelOfVertigo.Tests
             _session.ResolveSpin();
         }
 
+        /// <summary>Wins <paramref name="count"/> zones in a row, claiming any super zone unlock on the way.</summary>
         private void PlayWinningZones(int count)
         {
             for (int i = 0; i < count; i++)
             {
                 SpinAndResolve(RewardSlice);
                 _session.AdvanceZone();
+                if (_session.State == SessionState.Unlocking) _session.ClaimUnlock();
             }
         }
 

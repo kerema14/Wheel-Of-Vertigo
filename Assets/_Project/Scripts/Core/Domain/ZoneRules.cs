@@ -34,6 +34,9 @@ namespace WheelOfVertigo.Core.Domain
             return ZoneType.Normal;
         }
 
+        /// <summary>1 for the first super zone, 2 for the second and so on; 0 if <paramref name="zone"/> isn't a super zone.</summary>
+        public int GetSuperZoneNumber(int zone) => GetZoneType(zone) == ZoneType.Super ? zone / _superInterval : 0;
+
         // "Rewards that get better every zone."
         public int ScaleAmount(int baseAmount, int zone) =>
             (int)Math.Round(baseAmount * (1f + _growthPerZone * (zone - FirstZone)));

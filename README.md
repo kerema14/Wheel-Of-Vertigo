@@ -89,17 +89,43 @@ Cheats go through `GameSession`'s normal API, so the rules still hold. The menu 
 | `_value` suffix | Every image or text that changes at runtime ends in `_value`, e.g. `ui_text_wheel_title_value`. |
 | General → specific names | `ui_<type>_<area>_<detail>`, e.g. `ui_image_wheel_indicator_value`. |
 | No needless Raycast Target / Maskable | These are only on for button graphics, popup dims (marked with `RaycastBlocker`) and graphics under a `RectMask2D`. |
-| Animations not on root transforms | Tweens run on `*_content` children. Popup roots only toggle active. |
+| Animations not on root transforms | Tweens run on `*_content` children. Popup roots never move; a hidden popup only has its Canvas turned off. |
 | Buttons set in OnValidate, no editor OnClick | See each view's `OnValidate` and its `OnEnable`/`OnDisable`. |
 | Sliced sprites, no stretched images | Frames, panels and buttons are 9-sliced. Icons use Preserve Aspect. |
 | Sprite Atlas | `Art/Atlases/atlas_ui`, `atlas_icons` and `atlas_renders` (the full-size weapon renders), ASTC 6x6 on Android. |
 
-**Tools > Wheel Of Vertigo > Validate UI** checks the open scene and every prefab against these rules. **Fix Raycast Target And Maskable** turns off both flags where they aren't needed.
+**Tools > Wheel Of Vertigo > Validate UI** checks the open scene and every prefab against these rules, and against the canvas, raycaster and layout rules below. **Fix Raycast Target And Maskable** turns off both flags where they aren't needed.
 
 ## Performance notes
 
-- The spinning wheel and the fly layer each have their own nested `Canvas`. Their per-frame movement doesn't rebuild the static UI.
-- Fly-in icons and reward entries are pooled.
+These follow Unity's *Optimize your game performance for mobile, XR, and the web* guide.
+
+**Canvases are split by how often they change.** A change to one element rebuilds only its own canvas.
+
+| Canvas | Changes when | GraphicRaycaster |
+|---|---|---|
+| `ui_canvas_main` | Never: background and glow only | None |
+| `ui_panel_zone_bar` | The bar slides to the next zone | None |
+| `ui_panel_zone_info` | A card pulses, or the next zones change | None |
+| `ui_panel_wheel` | The indicator ticks during a spin, or the wheel changes tier | Yes, for the spin button |
+| `ui_rect_wheel_spin_root` (inside the wheel) | The wheel turns | None |
+| `ui_panel_rewards` | The exit button's state changes | Yes, for exit and scrolling |
+| `ui_rect_rewards_list` (inside the rewards panel) | It scrolls, or an amount counts up | None |
+| `ui_rect_reward_fly_layer` | Icons fly in | None |
+| `ui_popup_*` | A popup animates | Yes, while shown |
+
+- **Raycasting.** Only canvases with something to click have a GraphicRaycaster, and Raycast Target is off everywhere else.
+  - Without a raycaster on the root canvas, Unity doesn't order hits by depth across canvases. The popup canvases therefore use Override Sorting with order 1, so their dim takes the click before anything behind it.
+- **Hidden popups.** A hidden popup has its Canvas and GraphicRaycaster turned off instead of its GameObject. Nothing is drawn or hit, and its meshes are kept for the next time it shows.
+- **Layout groups.** They are used only where the content changes: the reward list, the cash-out grid, and each zone card's row, whose number width and reward cell vary. None is nested in another.
+  - The wheel slices and the zone info cards are placed with anchors. A slice with no amount (the bomb) moves its icon's bottom edge in code.
+- **Textures.**
+  - Every sprite the game uses is in an atlas, ASTC 6x6 on Android. Mipmaps and Read/Write are off throughout.
+  - The one exception is `star_glow_alpha`. It is a 128 px soft gradient that compression would band, so it stays a separate RGBA32 texture.
+- **Code.**
+  - Nothing runs every frame except `SafeAreaFitter`, which checks the safe area every 15 frames, and the cheat menu's `OnGUI` in development builds.
+  - References are cached in `OnValidate`, data lives in ScriptableObjects, and everything animates with DOTween rather than Animators.
+- **Pooling.** Fly-in icons and reward entries are pooled.
 - Zone bar cells are a fixed set that is reused as the bar scrolls, so it covers any number of zones.
 - The zone bar has two strips that slide together: the plain numbers behind, and a strip masked to the current-zone frame with each zone's panel and current-zone number colour. The next zone's colours wipe in with the motion instead of switching when it stops.
 - Reward icon textures are capped at 256 px, since they never draw larger than about 110 px.

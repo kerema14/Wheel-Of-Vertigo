@@ -30,12 +30,12 @@ MonoBehaviour:
   - _type: 0
     _reward: {fileID: 11400000, guid: 64873bc506cad2c4db6bcf64d2f83bd6, type: 2}
     _baseAmount: 1
+  - _type: 0
+    _reward: {fileID: 11400000, guid: d793aae7b342204429c47edb1ad26200, type: 2}
+    _baseAmount: 1
   - _type: 1
     _reward: {fileID: 0}
     _baseAmount: 1
-  - _type: 0
-    _reward: {fileID: 11400000, guid: 21693a4aefc8c2e4c95706c1921a3921, type: 2}
-    _baseAmount: 5
   - _type: 0
     _reward: {fileID: 11400000, guid: b7b44c642c9080d4692aec65f3476ec4, type: 2}
     _baseAmount: 3

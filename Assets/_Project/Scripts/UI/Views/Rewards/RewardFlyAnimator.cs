@@ -2,19 +2,22 @@ using System;
 using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace WheelOfVertigo.UI.Views
 {
     /// <summary>
     /// Bursts copies of a reward icon out of the wheel and flies them into the rewards panel.
+    /// One copy per unit won, up to a maximum, so a single item flies alone and big stacks get a full burst.
     /// Icons are pooled, so a long run creates no garbage after the first win.
     /// </summary>
     [RequireComponent(typeof(RectTransform))]
     public sealed class RewardFlyAnimator : MonoBehaviour
     {
         [SerializeField] private Image _iconPrefab;
-        [SerializeField, Range(1, 12)] private int _iconCount = 6;
+        [FormerlySerializedAs("_iconCount")]
+        [SerializeField, Range(1, 12)] private int _maxIconCount = 6;
         [SerializeField, Min(0f)] private float _burstRadius = 110f;
         [SerializeField, Min(0.05f)] private float _burstDuration = 0.3f;
         [SerializeField, Min(0.05f)] private float _flyDuration = 0.5f;
@@ -24,20 +27,22 @@ namespace WheelOfVertigo.UI.Views
         private readonly Stack<Image> _pool = new Stack<Image>();
         private readonly List<Sequence> _running = new List<Sequence>();
 
-        public void Play(Sprite icon, RectTransform from, RectTransform to, Action onIconArrived, Action onComplete)
+        public void Play(Sprite icon, int amount, RectTransform from, RectTransform to, Action onIconArrived, Action onComplete)
         {
-            int remaining = _iconCount;
+            int count = Mathf.Clamp(amount, 1, _maxIconCount);
+            int remaining = count;
             Vector3 start = from.position;
             Vector3 end = to.position;
+            float burstRadius = count == 1 ? 0f : _burstRadius;   // a lone icon pops in place instead of scattering
 
-            for (int i = 0; i < _iconCount; i++)
+            for (int i = 0; i < count; i++)
             {
                 Image image = Get(icon);
                 RectTransform rect = image.rectTransform;
                 rect.position = start;
                 rect.localScale = Vector3.one * 0.4f;
 
-                Vector3 burst = start + transform.TransformVector(UnityEngine.Random.insideUnitCircle * _burstRadius);
+                Vector3 burst = start + transform.TransformVector(UnityEngine.Random.insideUnitCircle * burstRadius);
 
                 Sequence sequence = DOTween.Sequence()
                     .Append(rect.DOMove(burst, _burstDuration).SetEase(Ease.OutCubic))

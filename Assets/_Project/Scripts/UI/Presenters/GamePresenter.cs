@@ -92,6 +92,7 @@ namespace WheelOfVertigo.UI.Presenters
             _wheelView.PlayWin(result.SliceIndex);
             _rewardFlyAnimator.Play(
                 reward.Icon,
+                result.Slice.Amount,
                 _wheelView.GetSliceIcon(result.SliceIndex),
                 entry.IconRect,
                 entry.Punch,
@@ -126,6 +127,7 @@ namespace WheelOfVertigo.UI.Presenters
 
             _unlockPopupView.Hide(() => _rewardFlyAnimator.Play(
                 reward.Icon,
+                1,
                 _unlockPopupView.IconRect,
                 entry.IconRect,
                 entry.Punch,

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace WheelOfVertigo.Core.Domain
@@ -9,7 +9,7 @@ namespace WheelOfVertigo.Core.Domain
         Spinning,     // a slice has been picked and the wheel is turning
         Collecting,   // a reward was won; the zone advances once the reward animation is done
         Busted,       // hit the bomb; everything collected is lost
-        CashedOut     // left at a safe or super zone with the rewards
+        CashedOut     // left the run with the rewards
     }
 
     public readonly struct SpinResult
@@ -43,7 +43,8 @@ namespace WheelOfVertigo.Core.Domain
         public SessionState State { get; private set; }
 
         public bool CanSpin => State == SessionState.Ready;
-        public bool CanLeave => State == SessionState.Ready && Rules.CanLeaveAt(CurrentZone.Index);
+        // As in Critical Strike, the player may leave at any zone, as long as the wheel isn't spinning.
+        public bool CanLeave => State == SessionState.Ready;
 
         public GameSession(ZoneRules rules, IWheelFactory wheelFactory, ISlicePicker picker)
         {
@@ -94,7 +95,7 @@ namespace WheelOfVertigo.Core.Domain
             return CurrentZone;
         }
 
-        /// <summary>Leaves the run and keeps the rewards. Only allowed at safe and super zones.</summary>
+        /// <summary>Leaves the run and keeps the rewards. Only allowed while the wheel isn't spinning.</summary>
         public IReadOnlyList<RewardStack> CashOut()
         {
             if (!CanLeave)

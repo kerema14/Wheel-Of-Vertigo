@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using WheelOfVertigo.Core.Data;
 
@@ -18,7 +18,7 @@ namespace WheelOfVertigo.Core.Domain
 
     /// <summary>
     /// The rewards collected during the current run. They are only kept if the player
-    /// leaves at a safe or super zone; a bomb clears them.
+    /// leaves the run; a bomb clears them.
     /// </summary>
     public sealed class RewardInventory
     {

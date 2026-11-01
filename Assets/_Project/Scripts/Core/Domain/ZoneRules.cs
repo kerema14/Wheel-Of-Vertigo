@@ -34,10 +34,6 @@ namespace WheelOfVertigo.Core.Domain
             return ZoneType.Normal;
         }
 
-        // "Player can choose to leave ... when the zone is safe or at the super zone."
-        // Whether the wheel is spinning is the session's concern, not a zone rule.
-        public bool CanLeaveAt(int zone) => GetZoneType(zone) != ZoneType.Normal;
-
         // "Rewards that get better every zone."
         public int ScaleAmount(int baseAmount, int zone) =>
             (int)Math.Round(baseAmount * (1f + _growthPerZone * (zone - FirstZone)));

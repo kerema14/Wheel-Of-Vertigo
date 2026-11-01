@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -7,7 +7,7 @@ using WheelOfVertigo.UI.Common;
 
 namespace WheelOfVertigo.UI.Views
 {
-    /// <summary>Shown when the player leaves at a safe or super zone: a summary of what they walked away with.</summary>
+    /// <summary>Shown when the player leaves the run: a summary of what they walked away with.</summary>
     public sealed class CashOutPopupView : PopupView
     {
         private const string CollectButtonName = "ui_button_popup_cash_out_collect";

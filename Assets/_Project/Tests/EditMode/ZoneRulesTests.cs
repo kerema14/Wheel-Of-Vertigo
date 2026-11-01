@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using NUnit.Framework;
 using WheelOfVertigo.Core.Domain;
 
@@ -23,16 +23,6 @@ namespace WheelOfVertigo.Tests
         public void GetZoneType_FollowsSafeAndSuperIntervals(int zone, ZoneType expected)
         {
             Assert.AreEqual(expected, _rules.GetZoneType(zone));
-        }
-
-        [TestCase(1, false)]
-        [TestCase(4, false)]
-        [TestCase(5, true)]
-        [TestCase(30, true)]
-        [TestCase(31, false)]
-        public void CanLeaveAt_OnlySafeAndSuperZones(int zone, bool expected)
-        {
-            Assert.AreEqual(expected, _rules.CanLeaveAt(zone));
         }
 
         [TestCase(1000, 1, 1000)]

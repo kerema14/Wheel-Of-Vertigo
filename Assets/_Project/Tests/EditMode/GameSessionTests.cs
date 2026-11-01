@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
@@ -65,9 +65,9 @@ namespace WheelOfVertigo.Tests
         }
 
         [Test]
-        public void CanLeave_OnlyAtSafeOrSuperZonesWhileReady()
+        public void CanLeave_AtAnyZoneWhileReady()
         {
-            Assert.IsFalse(_session.CanLeave, "zone 1 is a normal zone");
+            Assert.IsTrue(_session.CanLeave, "zone 1 is a normal zone");
 
             PlayWinningZones(4);
             Assert.AreEqual(5, _session.CurrentZone.Index);
@@ -76,6 +76,13 @@ namespace WheelOfVertigo.Tests
             _picker.Next = RewardSlice;
             _session.Spin();
             Assert.IsFalse(_session.CanLeave, "can't leave while the wheel is spinning");
+
+            _session.ResolveSpin();
+            Assert.IsFalse(_session.CanLeave, "can't leave while the won reward is being collected");
+
+            _session.AdvanceZone();
+            Assert.AreEqual(6, _session.CurrentZone.Index);
+            Assert.IsTrue(_session.CanLeave, "zone 6 is a normal zone");
         }
 
         [Test]
@@ -91,8 +98,11 @@ namespace WheelOfVertigo.Tests
         }
 
         [Test]
-        public void CashOut_ThrowsAtNormalZone()
+        public void CashOut_ThrowsWhileSpinning()
         {
+            _picker.Next = RewardSlice;
+            _session.Spin();
+
             Assert.Throws<InvalidOperationException>(() => _session.CashOut());
         }
 

@@ -121,10 +121,11 @@ namespace WheelOfVertigo.EditorTools
                 : 0;
         }
 
-        // Only a Selectable's target graphic, or a graphic marked as an intentional blocker, needs raycasts.
+        // Only a Selectable's target graphic, a graphic marked as an intentional blocker, or a RaycastArea
+        // (which exists only to be hit) needs raycasts.
         private static bool NeedsRaycast(Graphic graphic)
         {
-            if (graphic.TryGetComponent(out RaycastBlocker _)) return true;
+            if (graphic is RaycastArea || graphic.TryGetComponent(out RaycastBlocker _)) return true;
             return graphic.TryGetComponent(out Selectable selectable) && selectable.targetGraphic == graphic;
         }
 

@@ -9,7 +9,7 @@ namespace WheelOfVertigo.Core.Domain
         Ready,        // waiting for the player to spin or leave
         Spinning,     // a slice has been picked and the wheel is turning
         Collecting,   // a reward was won; the zone advances once the reward animation is done
-        Unlocking,    // reached a super zone; its guaranteed reward is waiting to be claimed
+        Unlocking,    // reached a zone with a guaranteed reward, which is waiting to be claimed
         Busted,       // hit the bomb; everything collected is lost
         CashedOut     // left the run with the rewards
     }
@@ -35,7 +35,6 @@ namespace WheelOfVertigo.Core.Domain
     {
         private readonly IWheelFactory _wheelFactory;
         private readonly ISlicePicker _picker;
-        private readonly ISuperZoneRewards _superZoneRewards;
         private SpinResult _pendingResult;
 
         public event Action<SessionState> StateChanged;
@@ -49,12 +48,11 @@ namespace WheelOfVertigo.Core.Domain
         // As in Critical Strike, the player may leave at any zone, as long as the wheel isn't spinning.
         public bool CanLeave => State == SessionState.Ready;
 
-        public GameSession(ZoneRules rules, IWheelFactory wheelFactory, ISlicePicker picker, ISuperZoneRewards superZoneRewards)
+        public GameSession(ZoneRules rules, IWheelFactory wheelFactory, ISlicePicker picker)
         {
             Rules = rules ?? throw new ArgumentNullException(nameof(rules));
             _wheelFactory = wheelFactory ?? throw new ArgumentNullException(nameof(wheelFactory));
             _picker = picker ?? throw new ArgumentNullException(nameof(picker));
-            _superZoneRewards = superZoneRewards ?? throw new ArgumentNullException(nameof(superZoneRewards));
             CurrentZone = CreateZone(ZoneRules.FirstZone);
             State = SessionState.Ready;
         }
@@ -132,8 +130,8 @@ namespace WheelOfVertigo.Core.Domain
 
         private Zone CreateZone(int index)
         {
-            ZoneType type = Rules.GetZoneType(index);
-            return new Zone(index, type, _wheelFactory.Create(index, type), _superZoneRewards.GetReward(index));
+            ZoneDefinition definition = Rules.GetZone(index);
+            return new Zone(index, definition, _wheelFactory.Create(index, definition), Rules.GetUnlock(index));
         }
 
         private void EnsureState(SessionState expected, string action)

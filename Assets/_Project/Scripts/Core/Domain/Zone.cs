@@ -2,28 +2,21 @@
 
 namespace WheelOfVertigo.Core.Domain
 {
-    public enum ZoneType
-    {
-        Normal,
-        Safe,
-        Super
-    }
-
     public sealed class Zone
     {
         public int Index { get; }
-        public ZoneType Type { get; }
+        public ZoneDefinition Definition { get; }
         public Wheel Wheel { get; }
 
-        /// <summary>The reward the player is guaranteed on reaching this zone, or null. Only super zones have one.</summary>
+        /// <summary>The reward the player is guaranteed on reaching this zone, or null.</summary>
         public RewardDefinition Unlock { get; }
 
         public bool HasUnlock => Unlock != null;
 
-        public Zone(int index, ZoneType type, Wheel wheel, RewardDefinition unlock = null)
+        public Zone(int index, ZoneDefinition definition, Wheel wheel, RewardDefinition unlock = null)
         {
             Index = index;
-            Type = type;
+            Definition = definition;
             Wheel = wheel;
             Unlock = unlock;
         }

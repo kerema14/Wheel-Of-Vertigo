@@ -20,6 +20,10 @@ PrefabInstance:
       propertyPath: m_fontColor.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1672839583941361731, guid: 23ae9426867236c4da82586ac7293d9d, type: 3}
+      propertyPath: _zone
+      value: 
+      objectReference: {fileID: 11400000, guid: f1d81435a541a8c4f9ec1dc59d4daf9f, type: 2}
     - target: {fileID: 2126180157279775782, guid: 23ae9426867236c4da82586ac7293d9d, type: 3}
       propertyPath: m_Sprite
       value: 

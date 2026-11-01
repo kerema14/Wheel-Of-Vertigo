@@ -615,21 +615,6 @@ MonoBehaviour:
   _cellWidth: 88
   _slideDuration: 0.45
   _slideEase: 9
-  _normalStyle:
-    NumberColor: {r: 1, g: 1, b: 1, a: 1}
-    CurrentNumberColor: {r: 0, g: 0, b: 0, a: 1}
-    CurrentPanel: {fileID: 21300000, guid: a37c8ad07ffaf9845ad595366fd4db13, type: 3}
-    CurrentPanelColor: {r: 1, g: 1, b: 1, a: 1}
-  _safeStyle:
-    NumberColor: {r: 0.45, g: 0.95, b: 0.3, a: 1}
-    CurrentNumberColor: {r: 1, g: 1, b: 1, a: 1}
-    CurrentPanel: {fileID: 21300000, guid: ec5ea3fcb3863f04daaab49cb66605a4, type: 3}
-    CurrentPanelColor: {r: 1, g: 1, b: 1, a: 1}
-  _superStyle:
-    NumberColor: {r: 1, g: 0.78, b: 0.22, a: 1}
-    CurrentNumberColor: {r: 0, g: 0, b: 0, a: 1}
-    CurrentPanel: {fileID: 21300000, guid: a37c8ad07ffaf9845ad595366fd4db13, type: 3}
-    CurrentPanelColor: {r: 1, g: 0.78, b: 0.22, a: 1}
   _passedZoneAlpha: 0.35
   _content: {fileID: 3140784940680916229}
   _currentContent: {fileID: 7462108250821394699}

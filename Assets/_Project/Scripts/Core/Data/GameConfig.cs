@@ -1,30 +1,22 @@
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using WheelOfVertigo.Core.Domain;
 
 namespace WheelOfVertigo.Core.Data
 {
     /// <summary>
-    /// The single tuning asset for a run: zone rhythm, reward growth, which wheel each zone type uses
-    /// and the rewards that super zones unlock.
+    /// The single tuning asset for a run: the zone types, reward growth, the bomb icon and the random seed.
     /// </summary>
     [CreateAssetMenu(menuName = "Wheel Of Vertigo/Game Config", fileName = "game_config")]
     public class GameConfig : ScriptableObject
     {
         [Header("Zones")]
-        [SerializeField, Min(2)] private int _safeZoneInterval = 5;
-        [SerializeField, Min(2)] private int _superZoneInterval = 30;
+        [Tooltip("The type of every zone that none of the zone types below claims.")]
+        [SerializeField] private ZoneDefinition _defaultZone;
+        [Tooltip("A zone takes the first type in this list whose interval divides its number, so put the rarer types first.")]
+        [SerializeField] private ZoneDefinition[] _zones = Array.Empty<ZoneDefinition>();
         [Tooltip("0.15 means slice amounts grow by 15% of their base amount every zone.")]
         [SerializeField, Min(0f)] private float _rewardGrowthPerZone = 0.15f;
-
-        [Header("Wheels")]
-        [SerializeField] private WheelConfig _normalWheel;
-        [SerializeField] private WheelConfig _safeWheel;
-        [SerializeField] private WheelConfig _superWheel;
-
-        [Header("Super zone unlocks")]
-        [Tooltip("Reaching a super zone unlocks one of these, in order: the 1st super zone gets the 1st entry, and so on. The list repeats once it runs out.")]
-        [SerializeField] private RewardDefinition[] _superZoneRewards;
 
         [Header("Bomb")]
         [SerializeField] private Sprite _bombIcon;
@@ -35,41 +27,40 @@ namespace WheelOfVertigo.Core.Data
 
         public Sprite BombIcon => _bombIcon;
         public int Seed => _seed;
-        public IReadOnlyList<RewardDefinition> SuperZoneRewards => _superZoneRewards;
 
-        public ZoneRules CreateRules() => new ZoneRules(_safeZoneInterval, _superZoneInterval, _rewardGrowthPerZone);
-
-        public WheelConfig GetWheelConfig(ZoneType zoneType)
-        {
-            switch (zoneType)
-            {
-                case ZoneType.Safe: return _safeWheel;
-                case ZoneType.Super: return _superWheel;
-                default: return _normalWheel;
-            }
-        }
+        public ZoneRules CreateRules() => new ZoneRules(_zones, _defaultZone, _rewardGrowthPerZone);
 
         private void OnValidate()
         {
-            if (_superZoneInterval % _safeZoneInterval != 0)
-                Debug.LogWarning($"{name}: the super zone interval should be a multiple of the safe zone interval.", this);
+            if (_defaultZone == null)
+            {
+                Debug.LogWarning($"{name}: no default zone.", this);
+            }
+            else
+            {
+                if (_defaultZone.Wheel != null && _defaultZone.Wheel.BombCount == 0)
+                    Debug.LogWarning($"{name}: the default zone's wheel has no bomb, so the game has no risk.", this);
+                if (Array.IndexOf(_zones, _defaultZone) >= 0)
+                    Debug.LogWarning($"{name}: the default zone is also in the zone list.", this);
+            }
 
-            if (_normalWheel != null && _normalWheel.BombCount == 0)
-                Debug.LogWarning($"{name}: the normal wheel has no bomb, so the game has no risk.", this);
+            for (int i = 0; i < _zones.Length; i++)
+            {
+                ZoneDefinition zone = _zones[i];
+                if (zone == null)
+                {
+                    Debug.LogWarning($"{name}: zone type {i} is empty.", this);
+                    continue;
+                }
 
-            if (_superZoneRewards == null || _superZoneRewards.Length == 0)
-                Debug.LogWarning($"{name}: no super zone rewards, so reaching a super zone unlocks nothing.", this);
-            else if (System.Array.IndexOf(_superZoneRewards, null) >= 0)
-                Debug.LogWarning($"{name}: a super zone reward is empty.", this);
+                // The zones that interrupt the bomb wheel are the rewards for getting that far.
+                if (zone.Wheel != null && zone.Wheel.BombCount > 0)
+                    Debug.LogWarning($"{name}: {zone.name}'s wheel has a bomb; only the default zone is meant to.", this);
 
-            WarnIfHasBomb(_safeWheel, "safe");
-            WarnIfHasBomb(_superWheel, "super");
-        }
-
-        private void WarnIfHasBomb(WheelConfig wheel, string zoneName)
-        {
-            if (wheel != null && wheel.BombCount > 0)
-                Debug.LogWarning($"{name}: the {zoneName} wheel must not contain a bomb.", this);
+                for (int j = 0; j < i; j++)
+                    if (_zones[j] != null && zone.Interval % _zones[j].Interval == 0)
+                        Debug.LogWarning($"{name}: every {zone.name} zone is also a {_zones[j].name} zone, which comes first, so {zone.name} never appears. Move it up or change its interval.", this);
+            }
         }
     }
 }

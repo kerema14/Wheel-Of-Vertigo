@@ -6,24 +6,19 @@ namespace WheelOfVertigo.Core.Domain
     /// <summary>Builds the wheel for a zone. Tests supply their own wheels without any assets.</summary>
     public interface IWheelFactory
     {
-        Wheel Create(int zone, ZoneType zoneType);
+        Wheel Create(int zone, ZoneDefinition definition);
     }
 
-    /// <summary>Builds wheels from the wheel config that GameConfig assigns to each zone type.</summary>
+    /// <summary>Builds a zone's wheel from its zone type's wheel config, with amounts grown for the zone.</summary>
     public sealed class WheelFactory : IWheelFactory
     {
-        private readonly GameConfig _config;
         private readonly ZoneRules _rules;
 
-        public WheelFactory(GameConfig config, ZoneRules rules)
-        {
-            _config = config;
-            _rules = rules;
-        }
+        public WheelFactory(ZoneRules rules) => _rules = rules;
 
-        public Wheel Create(int zone, ZoneType zoneType)
+        public Wheel Create(int zone, ZoneDefinition definition)
         {
-            WheelConfig wheelConfig = _config.GetWheelConfig(zoneType);
+            WheelConfig wheelConfig = definition.Wheel;
             var slices = new List<WheelSlice>(wheelConfig.Slices.Count);
 
             foreach (SliceData data in wheelConfig.Slices)

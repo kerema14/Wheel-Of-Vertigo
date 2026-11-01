@@ -36,6 +36,10 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 4278200652
       objectReference: {fileID: 0}
+    - target: {fileID: 1672839583941361731, guid: 23ae9426867236c4da82586ac7293d9d, type: 3}
+      propertyPath: _zone
+      value: 
+      objectReference: {fileID: 11400000, guid: e09b603a209744c488e659c05c2d00f4, type: 2}
     - target: {fileID: 2094739296358528188, guid: 23ae9426867236c4da82586ac7293d9d, type: 3}
       propertyPath: m_Padding.m_Right
       value: 8

@@ -2,13 +2,14 @@ using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using WheelOfVertigo.Core.Data;
 using WheelOfVertigo.UI.Common;
 
 namespace WheelOfVertigo.UI.Views
 {
     /// <summary>
-    /// One zone info card: the next zone of a type and, when that zone has one, the reward waiting there.
-    /// Each zone type's look lives in a variant of the card prefab.
+    /// One zone info card: the next zone of its zone type and, when that zone has one, the reward waiting there.
+    /// Each zone type's card is a variant of the card prefab that names its <see cref="ZoneDefinition"/>.
     /// </summary>
     public sealed class ZoneInfoCardView : MonoBehaviour
     {
@@ -17,6 +18,8 @@ namespace WheelOfVertigo.UI.Views
         private const string RewardName = "ui_rect_zone_info_card_reward";
         private const string RewardIconName = "ui_image_zone_info_card_reward_value";
 
+        [Tooltip("The zone type this card is about.")]
+        [SerializeField] private ZoneDefinition _zone;
         [SerializeField, Min(1f)] private float _pulseScale = 1.08f;
         [SerializeField, Min(0.05f)] private float _pulseDuration = 0.5f;
 
@@ -25,6 +28,8 @@ namespace WheelOfVertigo.UI.Views
         [SerializeField] private TMP_Text _zoneText;
         [SerializeField] private RectTransform _reward;
         [SerializeField] private Image _rewardIcon;
+
+        public ZoneDefinition Zone => _zone;
 
         public void Show(int zone, Sprite reward = null)
         {

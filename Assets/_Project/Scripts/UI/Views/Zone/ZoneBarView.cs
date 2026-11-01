@@ -1,8 +1,8 @@
 using System;
 using DG.Tweening;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
+using WheelOfVertigo.Core.Data;
 using WheelOfVertigo.Core.Domain;
 using WheelOfVertigo.UI.Common;
 
@@ -13,6 +13,7 @@ namespace WheelOfVertigo.UI.Views
     /// zone slides the strip one cell left and then rebinds the cells, so a fixed set of cells covers endless zones.
     /// Two strips slide together: the back strip of plain numbers, and a fore strip masked to the frame that holds
     /// the current and next zones' panels and numbers in their current-zone colours, so the next zone wipes in.
+    /// Each zone's colours and panel come from its zone type's <see cref="ZoneStyle"/>.
     /// </summary>
     public sealed class ZoneBarView : MonoBehaviour
     {
@@ -21,29 +22,16 @@ namespace WheelOfVertigo.UI.Views
         private const string CurrentPanelName = "ui_image_zone_bar_current_value";
         private const string NextPanelName = "ui_image_zone_bar_next_value";
 
-        [Serializable]
-        private struct ZoneStyle
-        {
-            public Color NumberColor;
-            public Color CurrentNumberColor;
-            [FormerlySerializedAs("CurrentFrame")] public Sprite CurrentPanel;
-            [FormerlySerializedAs("CurrentFrameColor")] public Color CurrentPanelColor;
-        }
-
         [SerializeField, Min(1f)] private float _cellWidth = 90f;
         [SerializeField, Min(0.05f)] private float _slideDuration = 0.45f;
         [SerializeField] private Ease _slideEase = Ease.OutCubic;
 
-        [Header("Styles")]
-        [SerializeField] private ZoneStyle _normalStyle;
-        [SerializeField] private ZoneStyle _safeStyle;
-        [SerializeField] private ZoneStyle _superStyle;
         [SerializeField, Range(0f, 1f)] private float _passedZoneAlpha = 0.35f;
 
         [Header("References (set from the hierarchy in OnValidate)")]
         [SerializeField] private RectTransform _content;
         [SerializeField] private RectTransform _currentContent;
-        [SerializeField, FormerlySerializedAs("_currentFrame")] private Image _currentPanel;
+        [SerializeField] private Image _currentPanel;
         [SerializeField] private Image _nextPanel;
         [SerializeField] private ZoneBarItemView[] _items = Array.Empty<ZoneBarItemView>();
         [SerializeField] private ZoneBarItemView[] _currentItems = Array.Empty<ZoneBarItemView>();
@@ -124,15 +112,7 @@ namespace WheelOfVertigo.UI.Views
 
         private static void SetX(RectTransform rect, float x) => rect.anchoredPosition = new Vector2(x, rect.anchoredPosition.y);
 
-        private ZoneStyle GetStyle(int zone)
-        {
-            switch (_rules.GetZoneType(zone))
-            {
-                case ZoneType.Safe: return _safeStyle;
-                case ZoneType.Super: return _superStyle;
-                default: return _normalStyle;
-            }
-        }
+        private ZoneStyle GetStyle(int zone) => _rules.GetZone(zone).Style;
 
         /// <summary>Lines the back cells up left to right with the middle one at x = 0, and the fore cells from x = 0.</summary>
         [ContextMenu("Layout Cells")]

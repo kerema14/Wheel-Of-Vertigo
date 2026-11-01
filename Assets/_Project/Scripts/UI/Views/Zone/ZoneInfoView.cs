@@ -1,36 +1,45 @@
+using System;
 using UnityEngine;
+using WheelOfVertigo.Core.Data;
 using WheelOfVertigo.Core.Domain;
-using WheelOfVertigo.UI.Common;
 
 namespace WheelOfVertigo.UI.Views
 {
     /// <summary>
-    /// The two cards that tell the player where the next safe and super zones are,
-    /// and what the next super zone unlocks.
+    /// The cards that tell the player where the next zone of each special type is, and what it unlocks.
+    /// Each card names its zone type, so a new type's card only has to be added under this panel.
     /// </summary>
     public sealed class ZoneInfoView : MonoBehaviour
     {
-        private const string SafeCardName = "ui_item_zone_info_card_safe";
-        private const string SuperCardName = "ui_item_zone_info_card_super";
-
         [Header("References (set from the hierarchy in OnValidate)")]
-        [SerializeField] private ZoneInfoCardView _safeCard;
-        [SerializeField] private ZoneInfoCardView _superCard;
+        [SerializeField] private ZoneInfoCardView[] _cards = Array.Empty<ZoneInfoCardView>();
 
-        public void Show(int nextSafeZone, int nextSuperZone, Sprite superZoneReward, ZoneType currentType)
+        private ZoneRules _rules;
+
+        public void Initialize(ZoneRules rules) => _rules = rules;
+
+        public void Show(int currentZone)
         {
-            _safeCard.Show(nextSafeZone);
-            _superCard.Show(nextSuperZone, superZoneReward);
+            ZoneDefinition current = _rules.GetZone(currentZone);
 
-            // The card for the type of zone the player is standing in pulses.
-            _safeCard.SetHighlighted(currentType == ZoneType.Safe);
-            _superCard.SetHighlighted(currentType == ZoneType.Super);
+            foreach (ZoneInfoCardView card in _cards)
+            {
+                int next = _rules.NextZoneOf(currentZone, card.Zone);
+                RewardDefinition unlock = _rules.GetUnlock(next);
+                card.Show(next, unlock != null ? unlock.Icon : null);
+
+                // The card for the type of zone the player is standing in pulses.
+                card.SetHighlighted(card.Zone == current);
+            }
         }
 
         private void OnValidate()
         {
-            transform.AssignIfFound(ref _safeCard, SafeCardName);
-            transform.AssignIfFound(ref _superCard, SuperCardName);
+            _cards = GetComponentsInChildren<ZoneInfoCardView>(true);
+
+            foreach (ZoneInfoCardView card in _cards)
+                if (card.Zone == null)
+                    Debug.LogWarning($"{name}: the card {card.name} has no zone type.", this);
         }
     }
 }

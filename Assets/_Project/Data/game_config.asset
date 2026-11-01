@@ -12,18 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0bae412eed5108c4c9d90643de4af1e9, type: 3}
   m_Name: game_config
   m_EditorClassIdentifier: WheelOfVertigo.Core::WheelOfVertigo.Core.Data.GameConfig
-  _safeZoneInterval: 5
-  _superZoneInterval: 30
+  _defaultZone: {fileID: 11400000, guid: 0910e349224756649bb1835e6d1b1dd6, type: 2}
+  _zones:
+  - {fileID: 11400000, guid: e09b603a209744c488e659c05c2d00f4, type: 2}
+  - {fileID: 11400000, guid: f1d81435a541a8c4f9ec1dc59d4daf9f, type: 2}
   _rewardGrowthPerZone: 0.15
-  _normalWheel: {fileID: 11400000, guid: e5c397405ce8cde46a57d87610235527, type: 2}
-  _safeWheel: {fileID: 11400000, guid: 668733636b5b47f4aa916162474bca1f, type: 2}
-  _superWheel: {fileID: 11400000, guid: 51dd939b5928be6419b988e208f948cc, type: 2}
-  _superZoneRewards:
-  - {fileID: 11400000, guid: 6d5d9f4c1152a2d468a830ca52369e54, type: 2}
-  - {fileID: 11400000, guid: 930f48b30ced9054983401062065db8e, type: 2}
-  - {fileID: 11400000, guid: 9b3193e3b76db1049975fe769f3eb9be, type: 2}
-  - {fileID: 11400000, guid: 17c0c6f42b305b2499777ef87bbd06b2, type: 2}
-  - {fileID: 11400000, guid: 108dc46ee856bfe4bbd41220bb443016, type: 2}
-  - {fileID: 11400000, guid: a72e741bfd73a82459a0ba253eef621b, type: 2}
   _bombIcon: {fileID: 21300000, guid: ecbf9f12997096d4087be1be3e663696, type: 3}
   _seed: 0

@@ -1,69 +1,109 @@
 ﻿using System;
+using System.Collections.Generic;
+using WheelOfVertigo.Core.Data;
 
 namespace WheelOfVertigo.Core.Domain
 {
     /// <summary>
-    /// The game's progression rules as plain C#: no Unity types, no assets.
-    /// Easy to unit test, e.g. new ZoneRules(5, 30, 0.1f).GetZoneType(30) == ZoneType.Super.
+    /// The game's progression rules: which zone type each zone is, what reaching it unlocks, and how rewards
+    /// grow. Zone types are data (<see cref="ZoneDefinition"/>), so adding one needs no change here.
     /// </summary>
     public sealed class ZoneRules
     {
         public const int FirstZone = 1;
 
-        private readonly int _safeInterval;
-        private readonly int _superInterval;
+        private readonly IReadOnlyList<ZoneDefinition> _zones;
         private readonly float _growthPerZone;
 
-        public ZoneRules(int safeInterval, int superInterval, float growthPerZone)
+        public ZoneDefinition DefaultZone { get; }
+
+        /// <param name="zones">Special zone types. A zone takes the first one whose interval divides it.</param>
+        /// <param name="defaultZone">The type of every zone that no special type claims.</param>
+        public ZoneRules(IReadOnlyList<ZoneDefinition> zones, ZoneDefinition defaultZone, float growthPerZone)
         {
-            if (safeInterval < 2) throw new ArgumentOutOfRangeException(nameof(safeInterval));
-            if (superInterval < 2) throw new ArgumentOutOfRangeException(nameof(superInterval));
+            _zones = zones ?? throw new ArgumentNullException(nameof(zones));
+            DefaultZone = defaultZone != null ? defaultZone : throw new ArgumentNullException(nameof(defaultZone));
             if (growthPerZone < 0f) throw new ArgumentOutOfRangeException(nameof(growthPerZone));
-            if (safeInterval % superInterval == 0)
-                throw new ArgumentException("Every safe zone would also be a super zone.", nameof(safeInterval));
-
-            _safeInterval = safeInterval;
-            _superInterval = superInterval;
             _growthPerZone = growthPerZone;
+
+            for (int i = 0; i < _zones.Count; i++)
+            {
+                ZoneDefinition zone = _zones[i];
+                if (zone == null) throw new ArgumentException($"Zone type {i} is empty.", nameof(zones));
+                if (zone.Interval < 2) throw new ArgumentException($"{zone.name} would claim every zone.", nameof(zones));
+
+                // If an earlier interval divides this one, every zone of this type is claimed first by the
+                // earlier type and this one never appears. Ruling that out also keeps NextZoneOf finite.
+                for (int j = 0; j < i; j++)
+                    if (zone.Interval % _zones[j].Interval == 0)
+                        throw new ArgumentException($"Every {zone.name} zone would be a {_zones[j].name} zone.", nameof(zones));
+            }
         }
 
-        public ZoneType GetZoneType(int zone)
+        public ZoneDefinition GetZone(int zone)
         {
-            if (zone % _superInterval == 0) return ZoneType.Super;   // check first: 30 is also a multiple of 5
-            if (zone % _safeInterval == 0) return ZoneType.Safe;
-            return ZoneType.Normal;
+            foreach (ZoneDefinition definition in _zones)
+                if (zone % definition.Interval == 0)
+                    return definition;
+
+            return DefaultZone;
         }
 
-        /// <summary>1 for the first super zone, 2 for the second and so on; 0 if <paramref name="zone"/> isn't a super zone.</summary>
-        public int GetSuperZoneNumber(int zone) => GetZoneType(zone) == ZoneType.Super ? zone / _superInterval : 0;
+        /// <summary>1 for the first zone of its type, 2 for the second and so on.</summary>
+        public int GetOrdinal(int zone)
+        {
+            ZoneDefinition definition = GetZone(zone);
+            int step = definition == DefaultZone ? 1 : definition.Interval;
+            int count = 0;
+
+            for (int earlier = step; earlier <= zone; earlier += step)
+                if (GetZone(earlier) == definition)
+                    count++;
+
+            return count;
+        }
+
+        /// <summary>The reward guaranteed for reaching <paramref name="zone"/>, or null.</summary>
+        public RewardDefinition GetUnlock(int zone)
+        {
+            IReadOnlyList<RewardDefinition> unlocks = GetZone(zone).Unlocks;
+            if (unlocks.Count == 0) return null;
+
+            return unlocks[(GetOrdinal(zone) - 1) % unlocks.Count];
+        }
+
+        /// <summary>The first zone at or after <paramref name="fromZone"/> of the given type.</summary>
+        public int NextZoneOf(int fromZone, ZoneDefinition definition)
+        {
+            int zone = Math.Max(fromZone, FirstZone);
+            int step = 1;
+
+            if (definition != DefaultZone)
+            {
+                if (!Contains(definition))
+                    throw new ArgumentException($"{(definition != null ? definition.name : "null")} isn't one of the zone types.", nameof(definition));
+
+                step = definition.Interval;
+                zone = (zone + step - 1) / step * step;
+            }
+
+            while (GetZone(zone) != definition)
+                zone += step;
+
+            return zone;
+        }
+
+        private bool Contains(ZoneDefinition definition)
+        {
+            foreach (ZoneDefinition zone in _zones)
+                if (zone == definition)
+                    return true;
+
+            return false;
+        }
 
         // "Rewards that get better every zone."
         public int ScaleAmount(int baseAmount, int zone) =>
             (int)Math.Round(baseAmount * (1f + _growthPerZone * (zone - FirstZone)));
-
-        /// <summary>The first zone at or after <paramref name="fromZone"/> with the given type.</summary>
-        public int NextZoneOfType(int fromZone, ZoneType type)
-        {
-            switch (type)
-            {
-                case ZoneType.Super:
-                    return RoundUpToMultiple(fromZone, _superInterval);
-                case ZoneType.Safe:
-                    // A super zone is never also a safe zone, so step past any multiple of the super interval.
-                    int zone = RoundUpToMultiple(fromZone, _safeInterval);
-                    while (GetZoneType(zone) != ZoneType.Safe) zone += _safeInterval;
-                    return zone;
-                default:
-                    int normal = Math.Max(fromZone, FirstZone);
-                    while (GetZoneType(normal) != ZoneType.Normal) normal++;
-                    return normal;
-            }
-        }
-
-        private static int RoundUpToMultiple(int value, int multiple)
-        {
-            int clamped = Math.Max(value, FirstZone);
-            return (clamped + multiple - 1) / multiple * multiple;
-        }
     }
 }

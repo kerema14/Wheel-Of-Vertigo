@@ -27,16 +27,15 @@ namespace WheelOfVertigo.UI.Presenters
         [SerializeField] private CashOutPopupView _cashOutPopupView;
 
         private GameSession _session;
-        private ISuperZoneRewards _superZoneRewards;
         private WheelConfig _shownWheel;
         private bool _isAnimating;   // true while a presentation step must finish before the player acts again
 
         private void Awake()
         {
             ZoneRules rules = _config.CreateRules();
-            _superZoneRewards = new SuperZoneRewardTable(_config.SuperZoneRewards, rules);
-            _session = new GameSession(rules, new WheelFactory(_config, rules), new RandomSlicePicker(_config.Seed), _superZoneRewards);
+            _session = new GameSession(rules, new WheelFactory(rules), new RandomSlicePicker(_config.Seed));
             _zoneBarView.Initialize(rules);
+            _zoneInfoView.Initialize(rules);
         }
 
         private void OnEnable()
@@ -109,7 +108,7 @@ namespace WheelOfVertigo.UI.Presenters
             ShowZone(animate: true, onShown: ShowUnlockIfAny);
         }
 
-        // A super zone presents its guaranteed reward once the bar and the wheel have settled on it.
+        // A zone with a guaranteed reward presents it once the bar and the wheel have settled on the zone.
         private void ShowUnlockIfAny()
         {
             if (_session.State == SessionState.Unlocking)
@@ -182,16 +181,8 @@ namespace WheelOfVertigo.UI.Presenters
         private void ShowZone(bool animate, Action onShown = null)
         {
             Zone zone = _session.CurrentZone;
-            ZoneRules rules = _session.Rules;
-            int nextSuperZone = rules.NextZoneOfType(zone.Index, ZoneType.Super);
-            RewardDefinition nextUnlock = _superZoneRewards.GetReward(nextSuperZone);
-
             _zoneBarView.ShowZone(zone.Index, animate);
-            _zoneInfoView.Show(
-                rules.NextZoneOfType(zone.Index, ZoneType.Safe),
-                nextSuperZone,
-                nextUnlock != null ? nextUnlock.Icon : null,
-                zone.Type);
+            _zoneInfoView.Show(zone.Index);
 
             if (_shownWheel == null)
             {

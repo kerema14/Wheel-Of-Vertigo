@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using NUnit.Framework;
-using UnityEngine;
 using WheelOfVertigo.Core.Data;
 using WheelOfVertigo.Core.Domain;
 
@@ -13,6 +12,10 @@ namespace WheelOfVertigo.Tests
         private const int BombSlice = 1;
         private const int BaseAmount = 100;
 
+        private TestZones _zones;
+        private ZoneDefinition _normal;
+        private ZoneDefinition _safe;
+        private ZoneDefinition _super;
         private RewardDefinition _cash;
         private RewardDefinition _unlock;
         private FixedSlicePicker _picker;
@@ -21,19 +24,21 @@ namespace WheelOfVertigo.Tests
         [SetUp]
         public void SetUp()
         {
-            _cash = ScriptableObject.CreateInstance<RewardDefinition>();
-            _unlock = ScriptableObject.CreateInstance<RewardDefinition>();
+            _zones = new TestZones();
+            _cash = _zones.CreateReward("cash");
+            _unlock = _zones.CreateReward("unlock");
+            _normal = _zones.Create("normal", 2);
+            _safe = _zones.Create("safe", 5);
+            _super = _zones.Create("super", 30, _unlock);
             _picker = new FixedSlicePicker();
-            var rules = new ZoneRules(5, 30, 0.1f);
-            var superZoneRewards = new SuperZoneRewardTable(new[] { _unlock }, rules);
-            _session = new GameSession(rules, new TestWheelFactory(_cash, rules), _picker, superZoneRewards);
+            var rules = new ZoneRules(new[] { _super, _safe }, _normal, 0.1f);
+            _session = new GameSession(rules, new TestWheelFactory(_cash, _normal, rules), _picker);
         }
 
         [TearDown]
         public void TearDown()
         {
-            UnityEngine.Object.DestroyImmediate(_cash);
-            UnityEngine.Object.DestroyImmediate(_unlock);
+            _zones.DestroyAll();
         }
 
         [Test]
@@ -126,12 +131,12 @@ namespace WheelOfVertigo.Tests
         public void SafeAndSuperWheels_HaveNoBomb()
         {
             PlayWinningZones(4);
-            Assert.AreEqual(ZoneType.Safe, _session.CurrentZone.Type);
+            Assert.AreSame(_safe, _session.CurrentZone.Definition);
             AssertNoBomb(_session.CurrentZone.Wheel);
 
             PlayWinningZones(25);
             Assert.AreEqual(30, _session.CurrentZone.Index);
-            Assert.AreEqual(ZoneType.Super, _session.CurrentZone.Type);
+            Assert.AreSame(_super, _session.CurrentZone.Definition);
             AssertNoBomb(_session.CurrentZone.Wheel);
         }
 
@@ -249,22 +254,24 @@ namespace WheelOfVertigo.Tests
             public int Pick(Wheel wheel) => Next;
         }
 
-        /// <summary>Normal wheels are [reward, bomb]; safe and super wheels are [reward, reward].</summary>
+        /// <summary>Normal wheels are [reward, bomb]; every other zone type's wheel is [reward, reward].</summary>
         private sealed class TestWheelFactory : IWheelFactory
         {
             private readonly RewardDefinition _reward;
+            private readonly ZoneDefinition _normal;
             private readonly ZoneRules _rules;
 
-            public TestWheelFactory(RewardDefinition reward, ZoneRules rules)
+            public TestWheelFactory(RewardDefinition reward, ZoneDefinition normal, ZoneRules rules)
             {
                 _reward = reward;
+                _normal = normal;
                 _rules = rules;
             }
 
-            public Wheel Create(int zone, ZoneType zoneType)
+            public Wheel Create(int zone, ZoneDefinition definition)
             {
                 var reward = new WheelSlice(SliceType.Reward, _reward, _rules.ScaleAmount(BaseAmount, zone));
-                WheelSlice second = zoneType == ZoneType.Normal
+                WheelSlice second = definition == _normal
                     ? new WheelSlice(SliceType.Bomb, null, 0)
                     : reward;
                 return new Wheel(null, new[] { reward, second });

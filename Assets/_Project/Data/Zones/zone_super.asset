@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 056907910ad19a4468f430135a95b1dd, type: 3}
+  m_Name: zone_super
+  m_EditorClassIdentifier: WheelOfVertigo.Core::WheelOfVertigo.Core.Data.ZoneDefinition
+  _interval: 30
+  _wheel: {fileID: 11400000, guid: 51dd939b5928be6419b988e208f948cc, type: 2}
+  _unlocks:
+  - {fileID: 11400000, guid: 6d5d9f4c1152a2d468a830ca52369e54, type: 2}
+  - {fileID: 11400000, guid: 930f48b30ced9054983401062065db8e, type: 2}
+  - {fileID: 11400000, guid: 9b3193e3b76db1049975fe769f3eb9be, type: 2}
+  - {fileID: 11400000, guid: 17c0c6f42b305b2499777ef87bbd06b2, type: 2}
+  - {fileID: 11400000, guid: 108dc46ee856bfe4bbd41220bb443016, type: 2}
+  - {fileID: 11400000, guid: a72e741bfd73a82459a0ba253eef621b, type: 2}
+  _style:
+    NumberColor: {r: 1, g: 0.78, b: 0.22, a: 1}
+    CurrentNumberColor: {r: 0, g: 0, b: 0, a: 1}
+    CurrentPanel: {fileID: 21300000, guid: a37c8ad07ffaf9845ad595366fd4db13, type: 3}
+    CurrentPanelColor: {r: 1, g: 0.78, b: 0.22, a: 1}

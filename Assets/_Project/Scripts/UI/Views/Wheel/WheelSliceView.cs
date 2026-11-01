@@ -23,7 +23,8 @@ namespace WheelOfVertigo.UI.Views
         {
             _icon.sprite = icon;
             _amount.text = amount;
-            _amount.enabled = !string.IsNullOrEmpty(amount);
+            // Deactivated rather than disabled, so the layout group gives its space to the icon (e.g. the bomb).
+            _amount.gameObject.SetActive(!string.IsNullOrEmpty(amount));
         }
 
         public Tween Punch(float strength, float duration)

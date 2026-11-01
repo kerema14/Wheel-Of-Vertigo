@@ -17,6 +17,7 @@ namespace WheelOfVertigo.UI.Views
         private const string SuperCardName = "ui_rect_zone_info_super_content";
         private const string SafeZoneTextName = "ui_text_zone_info_safe_zone_value";
         private const string SuperZoneTextName = "ui_text_zone_info_super_zone_value";
+        private const string SuperRewardName = "ui_rect_zone_info_super_reward";
         private const string SuperRewardIconName = "ui_image_zone_info_super_reward_value";
 
         [SerializeField, Min(1f)] private float _pulseScale = 1.08f;
@@ -27,6 +28,7 @@ namespace WheelOfVertigo.UI.Views
         [SerializeField] private RectTransform _superCard;
         [SerializeField] private TMP_Text _safeZoneText;
         [SerializeField] private TMP_Text _superZoneText;
+        [SerializeField] private RectTransform _superReward;
         [SerializeField] private Image _superRewardIcon;
 
         public void Show(int nextSafeZone, int nextSuperZone, Sprite superZoneReward, ZoneType currentType)
@@ -34,7 +36,7 @@ namespace WheelOfVertigo.UI.Views
             _safeZoneText.text = nextSafeZone.ToString();
             _superZoneText.text = nextSuperZone.ToString();
             _superRewardIcon.sprite = superZoneReward;
-            _superRewardIcon.enabled = superZoneReward != null;
+            _superReward.gameObject.SetActive(superZoneReward != null);   // without an unlock, the number takes its place
 
             // The card for the zone the player is standing in pulses, as a hint that leaving is allowed now.
             SetPulse(_safeCard, currentType == ZoneType.Safe);
@@ -62,6 +64,7 @@ namespace WheelOfVertigo.UI.Views
             transform.AssignIfFound(ref _superCard, SuperCardName);
             transform.AssignIfFound(ref _safeZoneText, SafeZoneTextName);
             transform.AssignIfFound(ref _superZoneText, SuperZoneTextName);
+            transform.AssignIfFound(ref _superReward, SuperRewardName);
             transform.AssignIfFound(ref _superRewardIcon, SuperRewardIconName);
         }
     }
